@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
 from .models import TaskType, Task, Worker, Position
-
-admin.site.register(TaskType)
-admin.site.register(Position)
 
 
 @admin.register(Worker)
@@ -21,3 +19,8 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ("name", "deadline", "is_completed", "priority", "task_type")
     list_filter = ("is_completed", "priority", "task_type")
     search_fields = ("name",)
+
+
+admin.site.register(TaskType)
+admin.site.register(Position)
+admin.site.unregister(Group)
