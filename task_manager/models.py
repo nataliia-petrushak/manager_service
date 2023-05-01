@@ -21,7 +21,8 @@ class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
-        related_name="workers"
+        related_name="workers",
+        default=1
     )
 
     def __str__(self) -> str:
@@ -53,7 +54,8 @@ class Task(models.Model):
     )
     assignees = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="tasks"
+        related_name="tasks",
+        blank=True
     )
 
     def __str__(self) -> str:
