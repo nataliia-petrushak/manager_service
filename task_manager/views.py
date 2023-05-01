@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from django.views import generic
 
-from .models import Task, TaskType, Position
+from .models import Task, TaskType, Position, Worker
 
 
 def index(request):
@@ -25,3 +25,15 @@ class TaskTypeListView(generic.ListView):
 
 class PositionListView(generic.ListView):
     model = Position
+
+
+class WorkerListView(generic.ListView):
+    model = Worker
+    queryset = get_user_model().objects.select_related("position")
+
+
+class TaskListView(generic.ListView):
+    model = Task
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related("assignees")
