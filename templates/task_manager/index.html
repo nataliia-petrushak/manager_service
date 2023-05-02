@@ -1,18 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %} About US {% endblock title %}
-
-<!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block body_class %} about-us {% endblock body_class %}
+{% block title %} Home {% endblock title %}
 
 {% block content %}
 
   {% include "includes/navigation.html" %}
 
-  <!-- End Navbar -->
-  <!-- -------- START HEADER 7 w/ text and video ------- -->
   <header class="bg-gradient-dark">
     <div class="page-header section-height-75" style="background-image: url('static/img/task-management.webp');">
       <span class="mask bg-dark opacity-6"></span>
@@ -51,138 +44,38 @@
   </header>
   <body>
     <section class="section section-lg pt-0">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-lg-4 text-center">
-                        <div class="icon-box mb-4">
-                            <div class="icon icon-primary mb-4 fa-2x">
-                                <span class="fas fa-user"></span>
-                            </div>
-                            <h3 class="h5">Team Members</h3>
-                            <span class="counter display-3 text-gray d-block">{{ num_workers }}</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4 text-center">
-                        <div class="icon-box mb-4">
-                            <div class="icon icon-primary mb-4 fa-2x">
-                                <span class="fas fa-money-check"></span>
-                            </div>
-                            <h3 class="h5">Tasks Available</h3>
-                            <span class="counter display-3 text-gray d-block">{{ num_tasks }}</span>
-                        </div>
-                        <!-- End of Call Box -->
-                    </div>
-                    <div class="col-md-4 col-lg-4 text-center">
-                        <!-- Email Box -->
-                        <div class="icon-box mb-4">
-                            <div class="icon icon-primary mb-4 fa-2x">
-                                <span class="fas fa-laptop"></span>
-                            </div>
-                            <h3 class="h5">Task Types</h3>
-                            <span class="counter display-3 text-gray d-block">{{ num_task_types }}</span>
-                        </div>
-                        <!-- End of Email Box -->
-                    </div>
-                </div>
-            </div>
-        </section>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-4 col-lg-4 text-center">
+                  <div class="icon-box mb-4">
+                      <div class="icon icon-primary mb-4 fa-2x">
+                          <span class="fas fa-user"></span>
+                      </div>
+                      <h3 class="h5">Team Members</h3>
+                      <span class="counter display-3 text-gray d-block">{{ num_workers }}</span>
+                  </div>
+              </div>
+              <div class="col-md-4 col-lg-4 text-center">
+                  <div class="icon-box mb-4">
+                      <div class="icon icon-primary mb-4 fa-2x">
+                          <span class="fas fa-money-check"></span>
+                      </div>
+                      <h3 class="h5">Tasks Available</h3>
+                      <span class="counter display-3 text-gray d-block">{{ num_tasks }}</span>
+                  </div>
+              </div>
+              <div class="col-md-4 col-lg-4 text-center">
+                  <div class="icon-box mb-4">
+                      <div class="icon icon-primary mb-4 fa-2x">
+                          <span class="fas fa-laptop"></span>
+                      </div>
+                      <h3 class="h5">Task Types</h3>
+                      <span class="counter display-3 text-gray d-block">{{ num_task_types }}</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
   </body>
 
 {% endblock content %}
-
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
-
-  <script src="static/js/plugins/countup.min.js"></script>
-  <script src="static/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-  <script>
-    // get the element to animate
-    var element = document.getElementById('count-stats');
-    var elementHeight = element.clientHeight;
-
-    // listen for scroll event and call animate function
-
-    document.addEventListener('scroll', animate);
-
-    // check if element is in view
-    function inView() {
-      // get window height
-      var windowHeight = window.innerHeight;
-      // get number of pixels that the document is scrolled
-      var scrollY = window.scrollY || window.pageYOffset;
-      // get current scroll position (distance from the top of the page to the bottom of the current viewport)
-      var scrollPosition = scrollY + windowHeight;
-      // get element position (distance from the top of the page to the bottom of the element)
-      var elementPosition = element.getBoundingClientRect().top + scrollY + elementHeight;
-
-      // is scroll position greater than element position? (is element in view?)
-      if (scrollPosition > elementPosition) {
-        return true;
-      }
-
-      return false;
-    }
-
-    var animateComplete = true;
-    // animate element when it is in view
-    function animate() {
-
-      // is element in view?
-      if (inView()) {
-        if (animateComplete) {
-          if (document.getElementById('state1')) {
-            const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
-            if (!countUp.error) {
-              countUp.start();
-            } else {
-              console.error(countUp.error);
-            }
-          }
-          if (document.getElementById('state2')) {
-            const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
-            if (!countUp1.error) {
-              countUp1.start();
-            } else {
-              console.error(countUp1.error);
-            }
-          }
-          if (document.getElementById('state3')) {
-            const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
-            if (!countUp2.error) {
-              countUp2.start();
-            } else {
-              console.error(countUp2.error);
-            };
-          }
-          animateComplete = false;
-        }
-      }
-    }
-
-    if (document.getElementById('typed')) {
-      var typed = new Typed("#typed", {
-        stringsElement: '#typed-strings',
-        typeSpeed: 90,
-        backSpeed: 90,
-        backDelay: 200,
-        startDelay: 500,
-        loop: true
-      });
-    }
-  </script>
-  <script>
-    if (document.getElementsByClassName('page-header')) {
-      window.addEventListener('scroll', function() {
-        var scrollPosition = window.pageYOffset;
-        var bgParallax = document.querySelector('.page-header');
-        var limit = bgParallax.offsetTop + bgParallax.offsetHeight;
-        if (scrollPosition > bgParallax.offsetTop && scrollPosition <= limit) {
-          bgParallax.style.backgroundPositionY = (50 - 10 * scrollPosition / limit * 3) + '%';
-        } else {
-          bgParallax.style.backgroundPositionY = '50%';
-        }
-      });
-    }
-  </script>
-
-{% endblock javascripts %}
