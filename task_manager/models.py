@@ -32,9 +32,8 @@ class Worker(AbstractUser):
 class Task(models.Model):
 
     PRIORITY_CHOICES = [
-        ("U", "Urgent"),
         ("H", "High"),
-        ("A", "Alarming"),
+        ("M", "Medium"),
         ("L", "Low")
     ]
 
