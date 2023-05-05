@@ -19,8 +19,8 @@ def index(request):
 
 class TaskTypeListView(generic.ListView):
     model = TaskType
-    template_name = "templates/task_type_list.html"
-    context_object_name = "task_types_list"
+    template_name = "task_manager/task_type_list.html"
+    context_object_name = "task_type_list"
 
 
 class PositionListView(generic.ListView):
@@ -28,6 +28,11 @@ class PositionListView(generic.ListView):
 
 
 class WorkerListView(generic.ListView):
+    model = Worker
+    queryset = get_user_model().objects.select_related("position")
+
+
+class WorkerDetailView(generic.DetailView):
     model = Worker
     queryset = get_user_model().objects.select_related("position")
 
