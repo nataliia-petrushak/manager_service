@@ -24,13 +24,15 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/soft-design-system.css' %}" rel="stylesheet" />
   <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static 'css/material-kit.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static 'css/task-list.css' %}" rel="stylesheet" />
 
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 <body>
-    {% block sidebar %} {% endblock sidebar %}
+    {% block sidebar %}{% endblock sidebar %}
 
     {% block content %}{% endblock content %}
 
