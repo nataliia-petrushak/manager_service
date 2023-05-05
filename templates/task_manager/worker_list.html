@@ -5,126 +5,124 @@
 
 {% block content %}
 
-    <section class="pt-sm-8 pb-5 position-relative bg-gradient-light overflow-hidden">
-        <span class="mask bg-white opacity-2"></span>
-        <div class="position-absolute w-100 z-index-1 top-0 mt-n3">
-          <svg width="100%" viewBox="0 -2 1920 157" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <title>wave-down</title>
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-              <g id="Artboard" fill="#FFFFFF" fill-rule="nonzero">
-                <g id="wave-down">
-                  <path d="M0,60.8320331 C299.333333,115.127115 618.333333,111.165365 959,47.8320321 C1299.66667,-15.5013009 1620.66667,-15.2062179 1920,47.8320331 L1920,156.389409 L0,156.389409 L0,60.8320331 Z" id="Path-Copy-2" transform="translate(960.000000, 78.416017) rotate(180.000000) translate(-960.000000, -78.416017) "></path>
-                </g>
-              </g>
+  {% include "includes/navigation.html" %}
+
+  <section class="pt-sm-8 pb-5 position-relative bg-gradient-light overflow-hidden">
+    <span class="mask bg-white opacity-2"></span>
+    <div class="position-absolute w-100 z-index-1 top-0 mt-n3">
+      <svg width="100%" viewBox="0 -2 1920 157" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>wave-down</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Artboard" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="wave-down">
+              <path d="M0,60.8320331 C299.333333,115.127115 618.333333,111.165365 959,47.8320321 C1299.66667,-15.5013009 1620.66667,-15.2062179 1920,47.8320331 L1920,156.389409 L0,156.389409 L0,60.8320331 Z" id="Path-Copy-2" transform="translate(960.000000, 78.416017) rotate(180.000000) translate(-960.000000, -78.416017) "></path>
             </g>
-          </svg>
-        </div>
-        <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-2">
-                {% include "includes/sidebar.html" %}
+          </g>
+        </g>
+      </svg>
+    </div>
+    <section style="margin-left:4%" class="section section-lg">
+        <div class="container">
+          <div class="row mb-5 mb-lg-6">
+            <div class="col-12 col-md-9 col-lg-8 text-center mx-auto">
+              <h2 style="color:hotpink" class="h1 mb-4">Your Team</h2>
+              <p class="lead">Here you can see all members of your team and check their progress</p>
             </div>
-            <div class="col-sm-10">
-                <section class="section section-lg">
-                    <div class="container">
-                        <div class="row mb-5 mb-lg-6">
-                            <div class="col-12 col-md-9 col-lg-8 text-center mx-auto">
-                                <h2 class="h1 mb-4">Your Team</h2>
-                                <p class="lead">Here you can see all members of your team and check their progress</p>
+          </div>
+          {% if worker_list %}
+            <div class="row">
+              {% for worker in worker_list %}
+                <div class="col-12 col-md-6 col-lg-4 mb-5 mx-auto">
+                  <a href="{% url 'task_manager:worker-detail' pk=worker.id %}">
+                    <div style="width: 350px; height: 460px;" class="card shadow border-gray-300">
+                      <img style="width: 350px; height: 300px; object-fir:cover"
+                           src="{% static 'img/team/'|add:worker.first_name|add:'.jpeg' %}"
+                           class="card-img-top rounded-top"
+                           alt="{{ worker.first_name }} {{ worker.last_name }}">
+                      <div class="card-body">
+                        <h3 class="h4 card-title mb-2">{{ worker.first_name }} {{ worker.last_name }}</h3>
+                        <span class="card-subtitle text-gray fw-normal">{{ worker.position.name }}</span>
+                        <p class="card-text my-3"></p>
+                        <ul class="list-unstyled d-flex mt-3 mb-0">
+                          <li>
+                            <a href="#" target="_blank" aria-label="facebook social link" class="icon-facebook me-3">
+                              <span class="fab fa-facebook-f"></span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#" target="_blank" aria-label="twitter social link" class="icon-twitter me-3">
+                              <span class="fab fa-twitter"></span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#" target="_blank" aria-label="slack social link" class="icon-slack me-3">
+                              <span class="fab fa-slack-hash"></span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#" target="_blank" aria-label="dribbble social link" class="icon-dribbble me-3">
+                              <span class="fab fa-dribbble"></span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>There are no members in your team! </p>
+          {% endif %}
+          <div style="margin: 5% 16%;" class="col-12 col-md-6 col-lg-8 mb-5 mb-lg-0">
+            <div class="row mb-2 mb-lg-2">
+                    <div class="card border-0 p-2 p-md-3 p-lg-5">
+                      <div class="card-header bg-white border-0 text-center">
+                        <h2>Want to work with us?</h2>
+                        <p>Cool! Let’s talk about your project</p>
+                      </div>
+                      <div class="card-body pt-0">
+                          <form action="#">
+                            <div class="mb-4">
+                              <label for="name">Your Name</label>
+                              <div class="input-group">
+                                <span class="input-group-text" id="basic-addon3"><span class="fas fa-user-circle"></span></span>
+                                <input type="text" class="form-control" placeholder="e.g. Bonnie Green" id="name" required>
+                              </div>
                             </div>
-                        </div>
-                        {% if worker_list %}
-                            <div class="row mb-5 mb-lg-5">
-                                {% for worker in worker_list %}
-                                    <div style="margin: 23px 0" class="col-12 col-md-6 col-lg-4 mb-5 mb-lg-0">
-                                        <div class="card shadow border-gray-300">
-                                            <img style="width: 354px; height: 340px;" src="{% static 'img/team/'|add:worker.first_name|add:'.jpeg' %}" class="card-img-top rounded-top" alt="Joseph Portrait">
-                                            <div class="card-body">
-                                                <h3 class="h4 card-title mb-2">{{ worker.first_name }} {{ worker.last_name }}</h3>
-                                                <span class="card-subtitle text-gray fw-normal">{{ worker.position.name }}</span>
-                                                <p class="card-text my-3"></p>
-                                                <ul class="list-unstyled d-flex mt-3 mb-0">
-                                                    <li>
-                                                        <a href="#" target="_blank" aria-label="facebook social link" class="icon-facebook me-3">
-                                                            <span class="fab fa-facebook-f"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" aria-label="twitter social link" class="icon-twitter me-3">
-                                                            <span class="fab fa-twitter"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" aria-label="slack social link" class="icon-slack me-3">
-                                                            <span class="fab fa-slack-hash"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" aria-label="dribbble social link" class="icon-dribbble me-3">
-                                                            <span class="fab fa-dribbble"></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                            <div class="mb-4">
+                              <label for="email">Your Email</label>
+                              <div class="input-group">
+                                <span class="input-group-text" id="basic-addon4"><span class="fas fa-envelope"></span></span>
+                                <input type="email" class="form-control" placeholder="example@company.com" id="email" required>
+                              </div>
                             </div>
-                        {% else %}
-                            <p>There are no members in your team! </p>
-                        {% endif %}
-                        <div style="margin: 5% 16%;" class="col-12 col-md-6 col-lg-8 mb-5 mb-lg-0">
-                            <div class="row mb-2 mb-lg-2">
-                                <div class="card border-0 p-2 p-md-3 p-lg-5">
-                                    <div class="card-header bg-white border-0 text-center">
-                                        <h2>Want to work with us?</h2>
-                                        <p>Cool! Let’s talk about your project</p>
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <form action="#">
-                                            <div class="mb-4">
-                                                <label for="name">Your Name</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text" id="basic-addon3"><span class="fas fa-user-circle"></span></span>
-                                                    <input type="text" class="form-control" placeholder="e.g. Bonnie Green" id="name" required>
-                                                </div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="email">Your Email</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text" id="basic-addon4"><span class="fas fa-envelope"></span></span>
-                                                    <input type="email" class="form-control" placeholder="example@company.com" id="email" required>
-                                                </div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="message">Your Message</label>
-                                                <textarea placeholder="Your message" class="form-control" id="message" rows="4" required></textarea>
-                                            </div>
-                                            <div class="d-grid">
-                                                <button type="submit" class="btn btn-secondary">Send message</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                            <div class="mb-4">
+                              <label for="message">Your Message</label>
+                              <textarea placeholder="Your message" class="form-control" id="message" rows="4" required></textarea>
                             </div>
+                            <div class="d-grid">
+                              <button type="submit" class="btn btn-secondary">Send message</button>
+                            </div>
+                          </form>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+          </div>
         </div>
-    </div>
-        <div class="position-absolute w-100 bottom-0">
-          <svg width="100%" viewBox="0 -1 1920 166" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <title>wave-up</title>
-            <g id="Page-1" stroke="none" stroke-width="1" fill="#FFFFFF" fill-rule="evenodd">
-              <g id="Artboard" transform="translate(0.000000, 5.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                <g id="wave-up" transform="translate(0.000000, -5.000000)">
-                  <path d="M0,70 C298.666667,105.333333 618.666667,95 960,39 C1301.33333,-17 1621.33333,-11.3333333 1920,56 L1920,165 L0,165 L0,70 Z" id="Path" fill="#FFFFFF"></path>
-                </g>
+      </section>
+    <div class="position-absolute w-100 bottom-0">
+      <svg width="100%" viewBox="0 -1 1920 166" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <title>wave-up</title>
+          <g id="Page-1" stroke="none" stroke-width="1" fill="#FFFFFF" fill-rule="evenodd">
+            <g id="Artboard" transform="translate(0.000000, 5.000000)" fill="#FFFFFF" fill-rule="nonzero">
+              <g id="wave-up" transform="translate(0.000000, -5.000000)">
+                <path d="M0,70 C298.666667,105.333333 618.666667,95 960,39 C1301.33333,-17 1621.33333,-11.3333333 1920,56 L1920,165 L0,165 L0,70 Z" id="Path" fill="#FFFFFF"></path>
               </g>
             </g>
-          </svg>
-        </div>
-    </section>
+          </g>
+        </svg>
+    </div>
+  </section>
 
 {% endblock content %}
