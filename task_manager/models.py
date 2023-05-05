@@ -1,6 +1,10 @@
+import datetime
+
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import QuerySet, Q
 
 
 class TaskType(models.Model):
@@ -27,6 +31,12 @@ class Worker(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username} (position: {self.position.name})"
+
+    def finished_tasks(self) -> QuerySet:
+        return self.tasks.filter(is_completed=True)
+
+    def overdue_tasks(self) -> QuerySet:
+        return self.tasks.filter(Q(deadline__lt=datetime.date.today()), Q(is_completed=False))
 
 
 class Task(models.Model):
