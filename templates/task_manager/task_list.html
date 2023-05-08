@@ -10,218 +10,236 @@
         {% include "includes/sidebar.html" %}
       </div>
       <div class="col-sm-10">
-        <section class="pt-sm-8 pb-5 position-relative bg-gradient-white overflow-hidden" xmlns="http://www.w3.org/1999/html">
-    <span class="mask bg-light opacity-1"></span>
-    <div class="container-fluid">
-      <div class="row">
-      <section class="section section-lg">
-        <div class="container">
-          <div class="row mb-lg-4 mx-1">
-          <div class="col-12 col-md-8 col-lg-8 mx-5">
-            <h2 style="color:hotpink;" class="h1 mb-2">Task Board</h2>
-            {% if task_list %}
-            <p class="lead">There is always what to do. Choose your task</p>
-            {% else %}
-            <p class="lead">There are no tasks for now!</p>
-            {% endif %}
-          </div>
-          </div>
-        </div>
-        <div class="container">
-        <div class="row row-cols-lg-auto mb-5 mb-lg-5">
-          {% if task_list %}
-            <div style="width: 100%" class="card bg-light">
-              <div style="width: 90%" class="table-wrap table-responsive">
-                <table class="table table-borderless">
-                  <thead>
-                    <tr class="p-0">
-                      <td class="w200 p-0" scope="col">
-                        <small class="btn btn-primary h-1 px-2">HIGH PRIORITY</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col">
-                        <small class="text-muted">ASSIGNEE</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col">
-                        <small class="text-muted">DEADLINE</small>
-                      </td>
-                      <td class="text-center w50 p-0 py-2" scope="col">
-                        <small class="text-muted">STAGE</small>
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for task in task_list %}
-                      {% if task.priority in "H" %}
-                        <tr class="border-bottom bg-white align-middle">
-                          <td style="border-radius:10px;">
-                            <div class="d-flex align-items-center">
-                              <span class="bg-pink mx-2">  </span>
-                              <a href="/">{{ task.name }}</a>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="align-middle">
-                            <div class="row text-center">
-                              <div class="col-12 mt-1">
-                                <div class="avatar-group">
-                                  {% for assignee in task.assignees.all %}
-                                    <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
-                                       class="avatar avatar-sm rounded-circle"
-                                       data-bs-toggle="tooltip"
-                                       data-bs-placement="bottom"
-                                       title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                                      <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                    </a>
-                                  {% endfor %}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="text-center align-middle">
-                            <div class="col-12">
-                              <span class="far fa-calendar-alt text-muted">  {{ task.deadline }}</span>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="align-middle">
-                            {% if task.is_completed %}
-                              <span class="btn btn-secondary violet">Completed</span>
-                            {% elif task.assignees.count > 0 %}
-                              <span class="btn btn-secondary yellow">In Progress</span>
-                            {% elif not task.is_completed %}
-                              <span class="btn btn-secondary pink">Available</span>
-                            {% endif %}
-                          </td>
-                        </tr>
-                      {% endif %}
-                    {% endfor %}
-                  </tbody>
-                </table>
-                <table class="table table-borderless">
-                  <thead>
-                    <tr class="p-0">
-                      <td class="w200 p-0" scope="col">
-                        <small class="btn btn-primary h-2 px-2">MEDIUM PRIORITY</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col"><small class="text-muted">ASSIGNEE</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col"><small class="text-muted">DEADLINE</small>
-                      </td>
-                      <td class="text-center w50 p-0 py-2" scope="col"><small class="text-muted">STAGE</small></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for task in task_list %}
-                      {% if task.priority in "M" %}
-                        <tr class="border-bottom bg-white">
-                          <td style="border-radius:10px" class="align-middle">
-                            <div class="d-flex align-items-center">
-                              <span class="bg-yellow mx-2">  </span>
-                              <a href="/">{{ task.name }}</a>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px">
-                            <div class="row text-center align-middle">
-                              <div class="col-12 mt-1">
-                                <div class="avatar-group">
-                                  {% for assignee in task.assignees.all %}
-                                    <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
-                                       class="avatar avatar-sm rounded-circle"
-                                       data-bs-toggle="tooltip"
-                                       data-bs-placement="bottom"
-                                       title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                                      <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                    </a>
-                                  {% endfor %}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="text-center align-middle">
-                            <div class="col-12 mt-2">
-                              <span class="far fa-calendar-alt text-muted">  {{ task.deadline }}</span>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="text-center align-middle">
-                            {% if task.is_completed %}
-                              <span class="btn btn-secondary violet">Completed</span>
-                            {% elif task.assignees.count > 0 %}
-                              <span class="btn btn-secondary yellow">In Progress</span>
-                            {% elif not task.is_completed %}
-                              <span class="btn btn-secondary pink">Available</span>
-                            {% endif %}
-                          </td>
-                        </tr>
-                      {% endif %}
-                    {% endfor %}
-                  </tbody>
-                </table>
-                <table class="table table-borderless">
-                  <thead>
-                    <tr class="p-0">
-                      <td class="w200 p-0" scope="col">
-                        <small class="btn btn-primary h-3 px-2">LOW PRIORITY</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col"><small class="text-muted">ASSIGNEE</small>
-                      </td>
-                      <td class="text-center w100 p-0 py-2" scope="col"><small class="text-muted">DEADLINE</small>
-                      </td>
-                      <td class="text-center w50 p-0 py-2" scope="col"><small class="text-muted">STAGE</small></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for task in task_list %}
-                      {% if task.priority in "L" %}
-                        <tr class="border-bottom bg-white">
-                          <td style="border-radius:10px" class="align-middle">
-                            <div class="d-flex align-items-center">
-                              <span class="bg-violet mx-2">  </span>
-                              <a href="/">{{ task.name }}</a>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px">
-                            <div class="row text-center mt-1">
-                              <div class="col-12">
-                                <div class="avatar-group">
-                                  {% for assignee in task.assignees.all %}
-                                    <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
-                                       class="avatar avatar-sm rounded-circle"
-                                       data-bs-toggle="tooltip"
-                                       data-bs-placement="bottom"
-                                       title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                                      <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                    </a>
-                                  {% endfor %}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="text-center align-middle">
-                            <div class="col-12 mt-2">
-                              <span class="far fa-calendar-alt text-muted">  {{ task.deadline }}</span>
-                            </div>
-                          </td>
-                          <td style="border-radius:10px" class="align-middle">
-                             {% if task.is_completed %}
-                              <span class="btn btn-secondary violet">Completed</span>
-                            {% elif task.assignees.count > 0 %}
-                              <span class="btn btn-secondary yellow">In Progress</span>
-                            {% elif not task.is_completed %}
-                              <span class="btn btn-secondary pink">Available</span>
-                            {% endif %}
-                          </td>
-                        </tr>
-                      {% endif %}
-                    {% endfor %}
-                  </tbody>
-                </table>
+        <section class="pt-sm-8 pb-5 position-relative bg-white overflow-hidden">
+          <span class="mask bg-light opacity-2"></span>
+          <div class="container-fluid">
+            <div class="row">
+              <section class="section section-lg">
+              <div class="container">
+                <div class="row mb-lg-4 mx-1">
+                <div class="col-12 col-md-8 col-lg-8">
+                  <h2 style="color:hotpink;" class="h1 mb-2">Task Board</h2>
+                  {% if task_list %}
+                  <p class="lead">There is always what to do. Choose your task</p>
+                  {% else %}
+                  <p class="lead">There are no tasks for now!</p>
+                  {% endif %}
+                </div>
+                </div>
               </div>
+              <div class="container">
+                {% if task_list %}
+                  <div style="width:100%" class="container">
+                    <div class="row">
+                      <div class="col-md-4 mt-3">
+                        <button style="width:100%; height: 4%;" class="btn btn-primary h-1 px-2">NEXT UP</button>
+                          {% for task in task_list %}
+                            {% if not task.is_completed and task.assignees.count == 0 %}
+                              <div class="card mt-3">
+                                <div class="card shadow-primary">
+                                  <div style="height: 10px" class="card-header">
+                                    {% if task.priority in "H" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "123" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% elif task.priority in "M" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "12" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% else %}
+                                      <div class="avatar-group">
+                                        <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                          <img src="{% static 'img/fire.png' %}">
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                  </div>
+                                  <div style="height: 80px" class="card-body">
+                                    <h5 class="h5"> {{ task.name }}</h5>
+                                  </div>
+                                  <div style="height: 100px; display:flex;" class="card-footer">
+                                    <div style="flex: 1; margin-right: 80px;">
+                                      {% if task.days_to_deadline <= 2 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-primary">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d'  }}
+                                        </button>
+                                      {% elif task.days_to_deadline < 5 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-warning">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% else %}
+                                        <button style="height:75%;" class="btn btn-sm bg-gradient-success">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% endif %}
+                                    </div>
+                                    <div class="avatar-group">
+                                      {% for assignee in task.assignees.all %}
+                                        <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                                           class="avatar avatar-sm rounded-circle"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-placement="bottom">
+                                        <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                      </a>
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                        <div class="col-md-4 mt-3">
+                          <button style="width:100%; height: 4%;" class="btn btn-info h-2 px-2">IN PROGRESS</button>
+                          {% for task in task_list %}
+                            {% if task.assignees.count > 0 and not task.is_completed %}
+                              <div class="card mt-3">
+                                <div class="card shadow-info">
+                                  <div style="height: 10px" class="card-header">
+                                    {% if task.priority in "H" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "123" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% elif task.priority in "M" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "12" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% else %}
+                                      <div class="avatar-group">
+                                        <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                          <img src="{% static 'img/fire.png' %}">
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                  </div>
+                                  <div style="height: 80px" class="card-body">
+                                    <h5 class="h5"> {{ task.name }}</h5>
+                                  </div>
+                                  <div style="height: 100px; display:flex;" class="card-footer">
+                                    <div style="flex: 1; margin-right: 80px;">
+                                      {% if task.days_to_deadline <= 2 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-primary">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% elif task.days_to_deadline < 5 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-warning">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% else %}
+                                        <button style="height:75%;" class="btn btn-sm bg-gradient-success">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% endif %}
+                                    </div>
+                                    <div class="avatar-group">
+                                        {% for assignee in task.assignees.all %}
+                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                          <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                        <div class="col-md-4 mt-3">
+                          <button style="width:100%; height:4%" class="btn btn-success h-3 px-2">COMPLETED</button>
+                          {% for task in task_list %}
+                            {% if task.is_completed %}
+                              <div class="card mt-3">
+                                <div class="card shadow-success">
+                                  <div style="height: 10px" class="card-header">
+                                    {% if task.priority in "H" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "123" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% elif task.priority in "M" %}
+                                      <div class="avatar-group">
+                                        {% for _ in "123" %}
+                                          <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/fire.png' %}">
+                                          </div>
+                                        {% endfor %}
+                                      </div>
+                                    {% else %}
+                                      <div class="avatar-group">
+                                        <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                          <img src="{% static 'img/fire.png' %}">
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                  </div>
+                                  <div style="height: 80px" class="card-body">
+                                    <h5 class="h5"> {{ task.name }}</h5>
+                                  </div>
+                                  <div style="height: 100px; display:flex;" class="card-footer">
+                                    <div style="flex: 1; margin-right: 80px;">
+                                      {% if task.days_to_deadline <= 2 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-primary">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% elif task.days_to_deadline < 5 %}
+                                        <button style="height:75%" class="btn btn-sm bg-gradient-warning">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% else %}
+                                        <button style="height:75%;" class="btn btn-sm bg-gradient-success">
+                                          <span class="far fa-calendar-alt"></span>
+                                          {{ task.deadline|date:'M d' }}
+                                        </button>
+                                      {% endif %}
+                                    </div>
+                                    <div class="avatar-group">
+                                      {% for assignee in task.assignees.all %}
+                                        <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                      </a>
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                  </div>
+                {% endif %}
+              </div>
+            </section>
             </div>
-          {% endif %}
           </div>
-        </div>
-      </section>
-      </div>
-    </div>
-  </section>
+        </section>
       </div>
     </div>
   </div>

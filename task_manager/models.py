@@ -1,7 +1,6 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import QuerySet, Q
@@ -69,3 +68,6 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} (priority: {self.priority}, deadline: {self.deadline})"
+
+    def days_to_deadline(self) -> int:
+        return (self.deadline - datetime.date.today()).days
