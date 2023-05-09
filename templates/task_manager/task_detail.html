@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Task ID: {{ task.id }} {% endblock %}
+
+{% block content %}
+
+  <div class="row">
+    <div style="width: 18%;">
+      {% include "includes/sidebar.html" %}
+    </div>
+    <div style="width: 82%">
+      <header>
+        <div class="page-header min-height-300" style="background-image: url({% static 'img/task-detail.webp' %});">
+          <span class="mask bg-gradient-dark opacity-6"></span>
+        </div>
+      </header>
+
+      <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+        <section class="py-sm-7 py-5 position-relative">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 mx-auto">
+                <div class="col-lg-9 col-md-9 z-index-2 position-relative px-md-1 px-sm-5 mx-auto mb-2">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="mb-2">{{ task.name }}</h3>
+                    <a href="/" class="btn btn-light">
+                      <i class="fa-light fa-pen"></i>
+                    </a>
+                    <a href="/" class="btn btn-light">
+                      <i class="fa-light fa-trash"></i>
+                    </a>
+                  </div>
+                  <table class="mx-n2 table table-borderless">
+                    <thead>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-muted"><i>Priority</i></td>
+                        <td>
+                          {% if task.priority in "H" %}
+                            <div class="avatar-group">
+                              {% for _ in "123" %}
+                                <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                  <img src="{% static 'img/fire.png' %}">
+                                </div>
+                              {% endfor %}
+                            </div>
+                          {% elif task.priority in "M" %}
+                            <div class="avatar-group">
+                              {% for _ in "12" %}
+                                <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                  <img src="{% static 'img/fire.png' %}">
+                                </div>
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                            <div class="avatar-group">
+                              <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <img src="{% static 'img/fire.png' %}">
+                              </div>
+                            </div>
+                          {% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted"><i>Status</i></td>
+                        <td>{% if not task.is_completed and task.assignees.count > 0 %}In Progress{% elif task.is_completed %}Completed{% else %}Next Up{% endif %}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted"><i>Assignees</i></td>
+                        <td>
+                          <ul class="list-unstyled">
+                            {% for assignee in task.assignees.all %}
+                              <li class="list-item mb-2">
+                                <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                                 class="text-muted avatar-sm"
+                                 title="{{ assignee.first_name }} {{ assignee.last_name }}">
+                                  <img style="border-radius: 50% !important;" src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                  <p style="margin: 3px; display: inline">{{ assignee.first_name }} {{assignee.last_name }}</p>
+                                </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted"><i>Due date</i></td>
+                        <td>{{ task.deadline }}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted"><i>Task type</i></td>
+                        <td>
+                          <a href="{% url 'task_manager:task-type-list'%}"
+                             class="text-muted avatar-sm"
+                             title="{{ assignee.first_name }} {{ assignee.last_name }}">
+                              <img style="border-radius: 50% !important;" src="{% static 'img/task_types/'|add:task.task_type.name|add:'.png' %}">
+                              <p style="margin: 3px; display: inline">{{ task.task_type }}</p>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr class="hr mb-4" style="border-bottom: 1px solid rgba(0, 0, 0, .5)" >
+                  <div class="row mb-4">
+                      <h5 class="h5">To do</h5>
+                      <p>{{ task.description }}</p>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
