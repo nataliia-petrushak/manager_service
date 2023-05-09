@@ -42,3 +42,10 @@ class TaskListView(generic.ListView):
     queryset = Task.objects.select_related(
         "task_type"
     ).prefetch_related("assignees")
+
+
+class TaskDetailView(generic.DetailView):
+    model = Task
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related("assignees")
