@@ -35,11 +35,12 @@
                         <button style="width:100%; height: 4%;" class="btn btn-primary h-1 px-2">NEXT UP</button>
                           {% for task in task_list %}
                             {% if not task.is_completed and task.assignees.count == 0 %}
-                              <div class="card mt-3">
-                                <div class="card shadow-primary">
-                                  <div style="height: 10px" class="card-header">
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div class="card mt-3">
+                                  <div class="card shadow-primary">
+                                  <div style="display: flex; height: 10px" class="mb-4 card-header">
                                     {% if task.priority in "H" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 38%" class="avatar-group">
                                         {% for _ in "123" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -47,7 +48,7 @@
                                         {% endfor %}
                                       </div>
                                     {% elif task.priority in "M" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 55%" class="avatar-group">
                                         {% for _ in "12" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -55,18 +56,23 @@
                                         {% endfor %}
                                       </div>
                                     {% else %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 60%" class="avatar-group">
                                         <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                           <img src="{% static 'img/fire.png' %}">
                                         </div>
                                       </div>
                                     {% endif %}
+                                    <div class="avatar-group">
+                                      <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <img src="{% static 'img/task_types/'|add:task.task_type.name|add:'.png' %}">
+                                      </div>
+                                    </div>
                                   </div>
                                   <div style="height: 80px" class="card-body">
-                                    <h5 class="h5"> {{ task.name }}</h5>
+                                    <h5 class="h5 text-center"> {{ task.name }}</h5>
                                   </div>
                                   <div style="height: 100px; display:flex;" class="card-footer">
-                                    <div style="flex: 1; margin-right: 80px;">
+                                    <div style="flex: 1; margin-right: 92px;">
                                       {% if task.days_to_deadline <= 2 %}
                                         <button style="height:75%" class="btn btn-sm bg-gradient-primary">
                                           <span class="far fa-calendar-alt"></span>
@@ -96,7 +102,8 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                                </div>
+                              </a>
                             {% endif %}
                           {% endfor %}
                         </div>
@@ -104,11 +111,12 @@
                           <button style="width:100%; height: 4%;" class="btn btn-info h-2 px-2">IN PROGRESS</button>
                           {% for task in task_list %}
                             {% if task.assignees.count > 0 and not task.is_completed %}
-                              <div class="card mt-3">
-                                <div class="card shadow-info">
-                                  <div style="height: 10px" class="card-header">
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div class="card mt-3">
+                                  <div class="card shadow-info">
+                                  <div style="display: flex; height: 10px;" class="mb-4 card-header">
                                     {% if task.priority in "H" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 38%" class="avatar-group">
                                         {% for _ in "123" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -116,7 +124,7 @@
                                         {% endfor %}
                                       </div>
                                     {% elif task.priority in "M" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 55%" class="avatar-group">
                                         {% for _ in "12" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -124,18 +132,23 @@
                                         {% endfor %}
                                       </div>
                                     {% else %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 60%" class="avatar-group">
                                         <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                           <img src="{% static 'img/fire.png' %}">
                                         </div>
                                       </div>
                                     {% endif %}
+                                    <div class="avatar-group">
+                                      <div style="flex: 1;" class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <img src="{% static 'img/task_types/'|add:task.task_type.name|add:'.png' %}">
+                                      </div>
+                                    </div>
                                   </div>
                                   <div style="height: 80px" class="card-body">
-                                    <h5 class="h5"> {{ task.name }}</h5>
+                                    <h5 class="h5 text-center"> {{ task.name }}</h5>
                                   </div>
                                   <div style="height: 100px; display:flex;" class="card-footer">
-                                    <div style="flex: 1; margin-right: 80px;">
+                                    <div style="flex: 1; margin-right: 92px;">
                                       {% if task.days_to_deadline <= 2 %}
                                         <button style="height:75%" class="btn btn-sm bg-gradient-primary">
                                           <span class="far fa-calendar-alt"></span>
@@ -154,15 +167,16 @@
                                       {% endif %}
                                     </div>
                                     <div class="avatar-group">
-                                        {% for assignee in task.assignees.all %}
-                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                      {% for assignee in task.assignees.all %}
+                                        <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                           <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
                                         </a>
-                                        {% endfor %}
+                                      {% endfor %}
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                                </div>
+                              </a>
                             {% endif %}
                           {% endfor %}
                         </div>
@@ -170,11 +184,12 @@
                           <button style="width:100%; height:4%" class="btn btn-success h-3 px-2">COMPLETED</button>
                           {% for task in task_list %}
                             {% if task.is_completed %}
-                              <div class="card mt-3">
-                                <div class="card shadow-success">
-                                  <div style="height: 10px" class="card-header">
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div class="card mt-3">
+                                  <div class="card shadow-success">
+                                  <div style="display: flex; height: 10px" class="mb-4 card-header">
                                     {% if task.priority in "H" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 38%" class="avatar-group">
                                         {% for _ in "123" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -182,7 +197,7 @@
                                         {% endfor %}
                                       </div>
                                     {% elif task.priority in "M" %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 55%" class="avatar-group">
                                         {% for _ in "123" %}
                                           <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <img src="{% static 'img/fire.png' %}">
@@ -190,18 +205,23 @@
                                         {% endfor %}
                                       </div>
                                     {% else %}
-                                      <div class="avatar-group">
+                                      <div style="flex: 1; margin-right: 60%" class="avatar-group">
                                         <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                           <img src="{% static 'img/fire.png' %}">
                                         </div>
                                       </div>
                                     {% endif %}
+                                    <div class="avatar-group">
+                                      <div style="flex: 1;" class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <img src="{% static 'img/task_types/'|add:task.task_type.name|add:'.png' %}">
+                                      </div>
+                                    </div>
                                   </div>
                                   <div style="height: 80px" class="card-body">
-                                    <h5 class="h5"> {{ task.name }}</h5>
+                                    <h5 class="h5 text-center"> {{ task.name }}</h5>
                                   </div>
                                   <div style="height: 100px; display:flex;" class="card-footer">
-                                    <div style="flex: 1; margin-right: 80px;">
+                                    <div style="flex: 1; margin-right: 92px;">
                                       {% if task.days_to_deadline <= 2 %}
                                         <button style="height:75%" class="btn btn-sm bg-gradient-primary">
                                           <span class="far fa-calendar-alt"></span>
@@ -228,7 +248,8 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                                </div>
+                              </a>
                             {% endif %}
                           {% endfor %}
                         </div>
