@@ -104,7 +104,7 @@
                                     <td style="border-radius:10px;" class="align-middle">
                                       <div style="width:300px" class="d-flex align-items-center">
                                         <span class="bg-pink mx-2">  </span>
-                                        <a class="link" href="/">{{ task.name }}</a>
+                                        <a class="link" href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
                                       </div>
                                     </td>
                                     <td style="border-radius:10px" class="align-middle">
@@ -169,7 +169,7 @@
                                   <td style="border-radius:10px;" class="align-middle">
                                     <div style="width:300px" class="d-flex align-items-center">
                                       <span class="bg-violet mx-2">  </span>
-                                      <a class="link">{{ task.name }}</a>
+                                      <a class="link" href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
                                     </div>
                                   </td>
                                   <td style="border-radius:10px" class="align-middle">
@@ -235,7 +235,7 @@
                                     <td style="border-radius:10px;" class="align-middle">
                                       <div style="width:300px" class="d-flex align-items-center">
                                         <span class="bg-yellow mx-2">  </span>
-                                        <a class="link">{{ task.name }}</a>
+                                        <a class="link" href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
                                       </div>
                                     </td>
                                     <td style="border-radius:10px" class="align-middle">
