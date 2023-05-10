@@ -24,12 +24,19 @@
                 <div class="col-lg-9 col-md-9 z-index-2 position-relative px-md-1 px-sm-5 mx-auto mb-2">
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <h3 class="mb-2">{{ task.name }}</h3>
-                    <a href="/" class="btn btn-light">
-                      <i class="fa-light fa-pen"></i>
-                    </a>
-                    <a href="/" class="btn btn-light">
-                      <i class="fa-light fa-trash"></i>
-                    </a>
+                    <div class="row">
+                      <a style="width: 40px; height: 40px; box-shadow: 0 0.3125rem 0.625rem 0 rgba(51, 153, 255, 0.32)" href="{% url 'task_manager:task-update' pk=task.id %}" class="btn btn-white mx-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen mx-n4" viewBox="0 0 16 16">
+                          <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                        </svg>
+                      </a>
+                      <a style="width: 40px; height: 40px; box-shadow: 0 0.3125rem 0.625rem 0 rgba(51, 153, 255, 0.32)" href="{% url 'task_manager:task-delete' pk=task.id %}" class="btn btn-white mx-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash mx-n4" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                   <table class="mx-n2 table table-borderless">
                     <thead>
@@ -43,33 +50,17 @@
                         <td class="text-muted"><i>Priority</i></td>
                         <td>
                           {% if task.priority in "H" %}
-                            <div class="avatar-group">
-                              {% for _ in "123" %}
-                                <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                  <img src="{% static 'img/fire.png' %}">
-                                </div>
-                              {% endfor %}
-                            </div>
+                            <span class="badge bg-gradient-primary">{{ task.get_priority_display }}</span>
                           {% elif task.priority in "M" %}
-                            <div class="avatar-group">
-                              {% for _ in "12" %}
-                                <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                  <img src="{% static 'img/fire.png' %}">
-                                </div>
-                              {% endfor %}
-                            </div>
+                            <span class="badge bg-gradient-warning">{{ task.get_priority_display }}</span>
                           {% else %}
-                            <div class="avatar-group">
-                              <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <img src="{% static 'img/fire.png' %}">
-                              </div>
-                            </div>
+                            <span class="badge bg-gradient-success">{{ task.get_priority_display }}</span>
                           {% endif %}
                         </td>
                       </tr>
                       <tr>
                         <td class="text-muted"><i>Status</i></td>
-                        <td>{% if not task.is_completed and task.assignees.count > 0 %}In Progress{% elif task.is_completed %}Completed{% else %}Next Up{% endif %}</td>
+                        <td>{% if not task.is_completed and task.assignees.count > 0 %}In Progress{% elif task.is_completed %}Completed{% else %}To Do{% endif %}</td>
                       </tr>
                       <tr>
                         <td class="text-muted"><i>Assignees</i></td>
@@ -90,26 +81,28 @@
                       </tr>
                       <tr>
                         <td class="text-muted"><i>Due date</i></td>
-                        <td>{{ task.deadline }}</td>
+                        <td>
+                          <svg style="margin: 0 3px 4px 0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                            <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
+                          </svg>
+                          {{ task.deadline }}
+                        </td>
                       </tr>
                       <tr>
                         <td class="text-muted"><i>Task type</i></td>
                         <td>
-                          <a href="{% url 'task_manager:task-type-list'%}"
-                             class="text-muted avatar-sm"
-                             title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                              <img style="border-radius: 50% !important;" src="{% static 'img/task_types/'|add:task.task_type.name|add:'.png' %}">
-                              <p style="margin: 3px; display: inline">{{ task.task_type }}</p>
-                          </a>
+                          <i>#{{ task.task_type }}</i>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <hr class="hr mb-4" style="border-bottom: 1px solid rgba(0, 0, 0, .5)" >
+                  <hr class="hr mb-4" style="border-bottom: 1px solid rgba(0, 0, 0, .5)">
                   <div class="row mb-4">
-                      <h5 class="h5">To do</h5>
-                      <p>{{ task.description }}</p>
-                    </div>
+                    <h5 class="h5">To do</h5>
+                    <p>{{ task.description }}</p>
+                  </div>
                 </div>
               </div>
             </div>
