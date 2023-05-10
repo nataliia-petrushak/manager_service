@@ -16,9 +16,13 @@ class TaskType(models.Model):
 
 class Position(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    duties = models.TextField(blank=True)
 
     def __str__(self) -> str:
         return self.name
+
+    def duties_to_a_list(self) -> list:
+        return list(self.duties.split(";"))[:-1]
 
 
 class Team(models.Model):
