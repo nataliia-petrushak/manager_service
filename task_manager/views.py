@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 
 from .models import Task, TaskType, Position, Worker
@@ -21,6 +22,26 @@ class TaskTypeListView(generic.ListView):
     model = TaskType
     template_name = "task_manager/task_type_list.html"
     context_object_name = "task_type_list"
+
+
+class TaskTypeCreate(generic.CreateView):
+    model = TaskType
+    fields = "__all__"
+    template_name = "task_manager/task_type_form.html"
+    success_url = reverse_lazy("task_manager:task-type-list")
+
+
+class TaskTypeUpdate(generic.UpdateView):
+    model = TaskType
+    fields = "__all__"
+    template_name = "task_manager/task_type_form.html"
+    success_url = reverse_lazy("task_manager:task-type-list")
+
+
+class TaskTypeDelete(generic.DeleteView):
+    model = TaskType
+    template_name = "task_manager/task_type_confirm_delete.html"
+    success_url = reverse_lazy("task_manager:task-type-list")
 
 
 class PositionListView(generic.ListView):
