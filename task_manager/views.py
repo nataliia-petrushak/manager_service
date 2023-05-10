@@ -70,3 +70,20 @@ class TaskDetailView(generic.DetailView):
     queryset = Task.objects.select_related(
         "task_type"
     ).prefetch_related("assignees")
+
+
+class TaskCreate(generic.CreateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskUpdate(generic.UpdateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:task-detail")
+
+
+class TaskDelete(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task_manager:task-list")
