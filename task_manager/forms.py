@@ -62,10 +62,12 @@ class WorkerCreateForm(UserCreationForm):
         required=True
     )
     position = forms.ModelChoiceField(
+        widget=forms.Select(attrs={"style": "padding: 10px;"}),
         queryset=Position.objects.all(),
         required=False
     )
     team = forms.ModelChoiceField(
+        widget=forms.Select(attrs={"style": "padding: 10px;"}),
         queryset=Team.objects.all(),
         required=False
     )
@@ -77,16 +79,24 @@ class WorkerCreateForm(UserCreationForm):
 
 class TaskForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={
+        "placeholder": "Name*",
         "style": "padding: 10px"
-    }))
+    }),
+        label="",
+        required=True
+    )
     description = forms.CharField(widget=forms.Textarea(attrs={
+        "placeholder": "Description",
         "style": "padding: 10px; height: 100px"
-    }))
+    }),
+        label=""
+    )
     project = forms.ModelChoiceField(
+        widget=forms.Select(attrs={"style": "padding: 10px;"}),
         queryset=Project.objects.all()
     )
     deadline = forms.DateField(widget=DateInput(attrs={
-        "style": "padding: 5px 0 0 0; width: 200px"
+        "style": "padding: 8px 0 0 55px; height: 43px; width: 200px"
     }))
     priority = forms.MultipleChoiceField(
         widget=forms.RadioSelect,
@@ -94,6 +104,7 @@ class TaskForm(forms.ModelForm):
     )
     task_type = forms.ModelChoiceField(
         queryset=TaskType.objects.all(),
+        widget=forms.Select(attrs={"style": "padding: 10px;"}),
     )
     assignees = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
@@ -107,11 +118,18 @@ class TaskForm(forms.ModelForm):
 
 class TaskTypeForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={
+        "placeholder": "Name*",
         "style": "padding: 10px"
-    }))
+    }),
+        label="",
+        required=True
+    )
     description = forms.CharField(widget=forms.Textarea(attrs={
+        "placeholder": "Description",
         "style": "padding: 10px; height: 200px"
-    }))
+    }),
+        label=""
+    )
 
     class Meta:
         model = TaskType
@@ -132,11 +150,16 @@ class TaskTypeSearchForm(forms.Form):
 
 class PositionForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={
+        "placeholder": "Name*",
         "style": "padding: 10px"
     }))
     duties = forms.CharField(widget=forms.Textarea(attrs={
+        "placeholder": "Description",
         "style": "padding: 10px; height: 100px"
-    }), help_text="Please, be sure to separate each duty with the symbol ' ; '")
+    }),
+        help_text="Please, separate each duty with the symbol ' ; '",
+        label=""
+    )
 
     class Meta:
         model = Position
