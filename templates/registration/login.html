@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block title %} LOG IN {% endblock title %}
+
+{% block content %}
+
+  <header>
+    <div class="page-header section-height-85">
+      <div>
+        <img class="position-absolute fixed-top ms-auto w-60 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0" src="{% static 'img/login.png' %}">
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 d-flex justify-content-center flex-column mx-8">
+            <div class="card z-index-0 fadeIn3 fadeInBottom mt-5">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-2">
+                  Task Manager
+                </h4>
+              </div>
+            </div>
+            <div class="card card-plain">
+              <div class="card-header pb-0 text-left">
+                <h4 class="font-weight-bolder">Sign In</h4>
+                <p class="mb-0">Enter your username and password to sign in</p>
+              </div>
+              <div class="card-body">
+                <form role="form" action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+                  <div class="text-center">
+                    <input type="submit" class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0" value="Sign in">
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                <p class="mb-4 text-sm mx-auto">
+                  Don't have an account?
+                  <a href="/page-sign-up.html" class="text-dark text-gradient font-weight-bold">Sign up</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+{% endblock content %}
