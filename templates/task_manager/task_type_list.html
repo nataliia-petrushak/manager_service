@@ -21,6 +21,10 @@
           <div class="container">
             <div class="row">
               <div class="col-12 mx-auto">
+                <div style="float: right" class="mt-n6">
+                  {% include "includes/search_form.html" %}
+                </div>
+                <br><br>
                 <div class="row py-5">
                   <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto mb-4">
                     <div class="d-flex justify-content-between align-items-center">
@@ -34,8 +38,6 @@
                       </div>
                     </div>
                     <br>
-                      {% include "includes/search_form.html" %}
-                    <br><br>
                     {% if task_type_list %}
                       {% for task_type in task_type_list %}
                         <div style="width:100%; box-shadow: 0 0.3125rem 0.625rem 0 rgba(51, 153, 255, 0.32)" class="card mb-3">
