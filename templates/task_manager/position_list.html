@@ -20,7 +20,12 @@
           <div class="container">
             <div class="row">
               <div class="col-12 mx-auto">
+                <div style="float: right" class="mt-n6">
+                  {% include "includes/search_form.html" %}
+                </div>
+                <br><br>
                 <div class="col-lg-9 col-md-9 z-index-2 position-relative px-md-1 px-sm-5 mx-auto mb-2">
+                  <br>
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <h2 class="mb-2">Positions</h2>
                     <div class="row">
@@ -36,6 +41,7 @@
                     {% else %}
                       <p class="mb-6">There are no positions yet!</p>
                     {% endif %}
+
                   {% for position in position_list %}
                   <div class="mb-5">
                     <div class="d-flex justify-content-between align-items-center mb-2">
