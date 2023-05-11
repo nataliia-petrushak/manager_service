@@ -3,7 +3,12 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import TaskForm, TaskTypeForm, TaskTypeSearchForm
+from .forms import (
+    TaskForm,
+    TaskTypeForm,
+    TaskTypeSearchForm,
+    PositionForm
+)
 from .models import Task, TaskType, Position, Worker
 
 
@@ -63,6 +68,23 @@ class TaskTypeDelete(generic.DeleteView):
 
 class PositionListView(generic.ListView):
     model = Position
+
+
+class PositionCreate(generic.CreateView):
+    model = Position
+    form_class = PositionForm
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class PositionUpdate(generic.UpdateView):
+    model = Position
+    form_class = PositionForm
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class PositionDelete(generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 class WorkerListView(generic.ListView):
