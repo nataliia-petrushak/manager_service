@@ -17,7 +17,7 @@ class TaskForm(forms.ModelForm):
         queryset=Project.objects.all(),
         widget=forms.RadioSelect
     )
-    deadline = forms.DateField(widget=DateInput(attrs={"style": "padding: 5px 0 0 0"}))
+    deadline = forms.DateField(widget=DateInput(attrs={"style": "padding: 5px 0 0 0; width: 200px"}))
     priority = forms.MultipleChoiceField(
         widget=forms.RadioSelect,
         choices=Task.PRIORITY_CHOICES
@@ -45,3 +45,12 @@ class TaskTypeForm(forms.ModelForm):
     class Meta:
         model = TaskType
         fields = "__all__"
+
+
+class TaskTypeSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by task type name...", "style": "padding: 10px"})
+    )
