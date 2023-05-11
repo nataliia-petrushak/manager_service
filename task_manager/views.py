@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from .forms import (
@@ -9,7 +9,8 @@ from .forms import (
     TaskTypeForm,
     TaskTypeSearchForm,
     PositionForm,
-    PositionSearchForm
+    PositionSearchForm,
+    WorkerCreateForm
 )
 from .models import Task, TaskType, Position, Worker
 
@@ -115,6 +116,25 @@ class WorkerListView(generic.ListView):
 class WorkerDetailView(generic.DetailView):
     model = Worker
     queryset = get_user_model().objects.select_related("position")
+
+
+class WorkerCreate(generic.CreateView):
+    model = Worker
+    form_class = WorkerCreateForm
+    template_name = "registration/register.html"
+    success_url = reverse_lazy("task_manager:index")
+
+
+class WorkerUpdate(generic.UpdateView):
+    model = Worker
+    fields = "__all__"
+    template_name = "registration/register.html"
+    success_url = reverse_lazy("task_manager:worker-detail")
+
+
+class WorkerDelete(generic.DeleteView):
+    model = Worker
+    success_url = reverse_lazy("task_manager:index")
 
 
 class TaskListView(generic.ListView):
