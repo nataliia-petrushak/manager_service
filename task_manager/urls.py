@@ -20,6 +20,7 @@ from .views import (
     TaskCreate,
     TaskUpdate,
     TaskDelete,
+    toggle_assign_to_task
 )
 
 urlpatterns = [
@@ -113,6 +114,11 @@ urlpatterns = [
         "tasks/<int:pk>/delete/",
         TaskDelete.as_view(),
         name="task-delete"
+    ),
+    path(
+        "tasks/<int:pk>/toggle-assign/",
+        toggle_assign_to_task,
+        name="toggle-task-assign",
     ),
 ]
 
