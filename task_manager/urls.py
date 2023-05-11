@@ -11,12 +11,15 @@ from .views import (
     PositionUpdate,
     PositionDelete,
     WorkerListView,
+    WorkerDetailView,
+    WorkerCreate,
+    WorkerUpdate,
+    WorkerDelete,
     TaskListView,
     TaskDetailView,
     TaskCreate,
     TaskUpdate,
     TaskDelete,
-    WorkerDetailView
 )
 
 urlpatterns = [
@@ -70,6 +73,21 @@ urlpatterns = [
         "workers/<int:pk>/",
         WorkerDetailView.as_view(),
         name="worker-detail"
+    ),
+    path(
+        "accounts/register/",
+        WorkerCreate.as_view(),
+        name="worker-create"
+    ),
+    path(
+        "workers/<int:pk>/update/",
+        WorkerUpdate.as_view(),
+        name="worker-update"
+    ),
+    path(
+        "workers/<int:pk>/delete/",
+        WorkerDelete.as_view(),
+        name="worker-delete"
     ),
     path(
         "tasks/",
