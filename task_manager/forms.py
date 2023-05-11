@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from .models import Task, Project, TaskType
+from .models import Task, Project, TaskType, Position
 
 
 class DateInput(forms.DateInput):
@@ -9,7 +9,9 @@ class DateInput(forms.DateInput):
 
 
 class TaskForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"style": "padding: 10px"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "style": "padding: 10px"
+    }))
     description = forms.CharField(widget=forms.Textarea(attrs={
         "style": "padding: 10px; height: 100px"
     }))
@@ -17,7 +19,9 @@ class TaskForm(forms.ModelForm):
         queryset=Project.objects.all(),
         widget=forms.RadioSelect
     )
-    deadline = forms.DateField(widget=DateInput(attrs={"style": "padding: 5px 0 0 0; width: 200px"}))
+    deadline = forms.DateField(widget=DateInput(attrs={
+        "style": "padding: 5px 0 0 0; width: 200px"
+    }))
     priority = forms.MultipleChoiceField(
         widget=forms.RadioSelect,
         choices=Task.PRIORITY_CHOICES
@@ -37,7 +41,9 @@ class TaskForm(forms.ModelForm):
 
 
 class TaskTypeForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={"style": "padding: 10px"}))
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "style": "padding: 10px"
+    }))
     description = forms.CharField(widget=forms.Textarea(attrs={
         "style": "padding: 10px; height: 200px"
     }))
@@ -52,5 +58,21 @@ class TaskTypeSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by task type name...", "style": "padding: 10px"})
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by task type name...",
+            "style": "padding: 10px"
+        })
     )
+
+
+class PositionForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "style": "padding: 10px"
+    }))
+    duties = forms.CharField(widget=forms.Textarea(attrs={
+        "style": "padding: 10px; height: 100px"
+    }), help_text="Please, be sure to separate each duty with the symbol ' ; '")
+
+    class Meta:
+        model = Position
+        fields = "__all__"
