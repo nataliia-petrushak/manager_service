@@ -30,8 +30,8 @@
                   <form action="" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <input type="submit" value="Submit" class="btn bg-gradient-success">
-                    <a class="btn bg-gradient-danger" href="{% url 'task_manager:task-list' %}">Cancel</a>
+                    <input type="submit" value="Submit" class="btn bg-gradient-dark mx-auto">
+                    <a class="btn bg-gradient-light mx-4" href="{% url 'task_manager:task-list' %}">Cancel</a>
                   </form>
                 </div>
               </div>
