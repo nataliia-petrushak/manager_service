@@ -76,3 +76,15 @@ class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
         fields = "__all__"
+
+
+class PositionSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by the position name... ",
+            "style": "padding: 10px; width: 300px;"
+        })
+    )
