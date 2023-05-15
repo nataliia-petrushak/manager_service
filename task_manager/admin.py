@@ -22,9 +22,12 @@ class WorkerAdmin(UserAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ("name", "deadline", "is_completed", "priority", "task_type")
+    list_display = ("name", "deadline", "is_completed", "priority", "task_type", "tag_list")
     list_filter = ("is_completed", "priority", "task_type")
     search_fields = ("name",)
+
+    def tag_list(self, obj):
+        return ", ".join(o for o in obj.tags.names())
 
 
 admin.site.register(Team)

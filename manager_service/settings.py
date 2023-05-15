@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "task_manager",
     "crispy_forms",
     "crispy_bootstrap4",
+    "taggit",
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,5 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+TAGGIT_CASE_INSENSITIVE = True
