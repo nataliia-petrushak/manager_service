@@ -37,17 +37,22 @@
                         {{ form.is_completed|as_crispy_field }}
                       </div>
                     </div>
-                    {{ form.deadline|as_crispy_field }}
+                    <div class="form-group row">
+                      <div class="col">
+                        {{ form.deadline|as_crispy_field }}
+                      </div>
+                      <div class="col">
+                        <label>Tags</label>
+                        <input type="text" data-role="tagsinput" class="form-control" name="tags">
+                      </div>
+                    </div>
                     {{ form.description|as_crispy_field }}
-
-
                     <div class="form-group row">
                       <div class="col">
                         {{ form.project|as_crispy_field }}
                       </div>
                       <div class="col">
                         {{ form.task_type|as_crispy_field }}
-
                       </div>
                     </div>
                     <div class="form-group row">
@@ -58,11 +63,11 @@
                          {{ form.priority|as_crispy_field }}
                       </div>
                     </div>
-                  <div class="text-center">
+                    <div class="text-center">
                     <input type="submit" class="btn btn-lg bg-gradient-dark mt-4 mb-0" value="Submit">
                     <a href="{% url 'task_manager:task-list' %}" class="btn bg-gradient-secondary btn-lg mt-4 mb-0 mx-3">Cancel</a>
                   </div>
-                </form>
+                  </form>
                 </div>
               </div>
             </div>
