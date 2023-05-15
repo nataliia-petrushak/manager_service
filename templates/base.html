@@ -26,22 +26,24 @@
   <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet" />
   <link id="pagestyle" href="{% static 'css/material-kit.css' %}" rel="stylesheet" />
   <link id="pagestyle" href="{% static 'css/task-list.css' %}" rel="stylesheet" />
-
-  <!-- Specific CSS goes HERE -->
-  {% block stylesheets %}{% endblock stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/tagsinput.css' %}">
 
 </head>
 <body>
     {% block sidebar %}{% endblock sidebar %}
 
     {% block content %}{% endblock content %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{% static 'js/tagsinput.js' %}"></script>
+    <script>
+      $("#post-form").submit(function(e){
+          e.preventDefault();
+          });
+    </script>
 
     {% include "includes/footer.html" %}
 
     {% include "includes/scripts.html" %}
-
-  <!-- Specific JS goes HERE -->
-  {% block javascripts %}{% endblock javascripts %}
 
 </body>
 </html>

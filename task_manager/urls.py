@@ -20,7 +20,8 @@ from .views import (
     TaskCreate,
     TaskUpdate,
     TaskDelete,
-    toggle_assign_to_task
+    toggle_assign_to_task,
+    tagged,
 )
 
 urlpatterns = [
@@ -119,6 +120,11 @@ urlpatterns = [
         "tasks/<int:pk>/toggle-assign/",
         toggle_assign_to_task,
         name="toggle-task-assign",
+    ),
+    path(
+        "tag/<slug:slug>/",
+        tagged,
+        name="tagged"
     ),
 ]
 
