@@ -25,6 +25,19 @@
                     <p class="lead">There are no tasks for now!</p>
                     {% endif %}
                   </div>
+                    {% if tags.count > 0 %}
+                      <div style="width: 100%" class="d-flex">
+                      <label class="p me-2">Tags:</label>
+                      {% for tag in tags %}
+                        <a
+                            style="background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 3px; margin: 0 3px; color: white"
+                            class="btn button-sm"
+                            href="{% url 'task_manager:tagged' slug=tag.slug %}">
+                          {{ tag.name }}
+                        </a>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
                   </div>
                 </div>
                 <div class="container-fluid">
@@ -33,143 +46,165 @@
                       <div class="row">
                         <div class="col-md-4 mt-3">
                           <div style="width:100%; background-color: rgba(255, 0, 127, .1);border: 1px solid #FF007F;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0" class="btn btn-primary h-1 px-2">
-                              <h5 style="color: #FB0778;font-size: 25px; font-weight:bold; padding:0 10px">TO DO</h5>
+                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-primary h-1 px-2 ">
+                              <h5 style="color: #FB0778;font-size: 25px; font-weight:bold; padding:0 10px;">TO DO</h5>
+                              <span style="background-color:rgb(255, 0, 127); color: white; width:34px; height:30px; margin: 0 0 0 157px" class="badge">{{ to_do.count }}</span>
                             </div>
                             <a style="width: 90%; margin: 0 5%; border: 1px solid #FF007F;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
                               <svg style="color: #FF007F; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
-                            {% for task in task_list %}
-                              {% if not task.is_completed and task.assignees.count == 0 %}
-                                <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                  <div style="width:90%;" class="card mt-3 mx-auto">
-                                    <div class="card shadow-primary">
-                                      <div style="display: flex; height: 10px" class="mb-4 card-header">
-                                        {% if task.priority in "H" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-primary">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% elif task.priority in "M" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-warning">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% else %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-success">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% endif %}
-                                        <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
-                                      </div>
-                                      <div style="height: 50px" class="card-body">
-                                        <h5 class="h5 text-center"> {{ task.name }}</h5>
-                                      </div>
-                                      <div style="height: 101px;" class="card-footer"></div>
+                            {% for task in to_do %}
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div style="width:90%" class="card mt-3 mx-auto">
+                                  <div class="card shadow-primary">
+                                    <div style="height:5px" class="mb-2 card-header d-flex">
+                                      {% if task.priority == "H" %}
+                                        <div style="flex: 1">
+                                          <span class="badge bg-primary">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% elif task.priority == "M" %}
+                                        <div style="flex: 1">
+                                          <span class="badge bg-warning">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% else %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-success">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% endif %}
+                                      <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
+                                    </div>
+                                    <div style="height: 90px" class="card-body mb-2">
+                                      <h5 class="h5 text-center mt-4"> {{ task.name }}</h5>
+                                    </div>
+                                    <div style="height: 70px;" class="card-footer d-flex">
+                                      {% if task.tags.all %}
+                                        <div style="margin-top: 4px; flex: 1">
+                                          {% if task.tags_left > 0 %}
+                                            <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white; margin: 0 2px" class="btn button-sm mx-n0">+{{ task.tags_left }}</button>
+                                          {% endif %}
+                                          <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white" class="btn button-sm mx-n0">{{ task.tags.first|truncatechars:"8" }}</button>
+                                        </div>
+                                      {% endif %}
                                     </div>
                                   </div>
-                                </a>
-                              {% endif %}
+                                </div>
+                              </a>
                             {% endfor %}
                           </div>
                         </div>
                         <div class="col-md-4 mt-3">
                           <div style="width:100%; background-color: rgba(111, 0, 255, .1); border: 1px solid #6f00ff; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(111, 0, 255, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0" class="btn btn-info h-2 px-2">
+                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-info h-2 px-2">
                               <h5 style="color: #6f00ff; font-size: 25px; font-weight:bold; padding:0 10px">IN PROGRESS</h5>
+                              <span style="background-color:rgb(111, 0, 255); color: white; width:34px; height:30px; margin: 0 0 0 72px" class="badge">{{ in_process.count }}</span>
                             </div>
                             <a style="width: 90%; margin: 0 5%; border: 1px solid #6f00ff;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
                               <svg style="color: #6f00ff; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
-                            {% for task in task_list %}
-                              {% if task.assignees.count > 0 and not task.is_completed %}
-                                <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                  <div style="width:90%" class="card mt-3 mx-auto">
-                                    <div class="card shadow-info">
-                                      <div style="display: flex; height:5px" class="mb-2 card-header">
-                                        {% if task.priority in "H" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-primary">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% elif task.priority in "M" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-warning">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% else %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-success">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% endif %}
-                                        <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
-                                      </div>
-                                      <div style="height: 60px" class="card-body mb-2">
-                                        <h5 class="h5 text-center"> {{ task.name }}</h5>
-                                      </div>
-                                      <div style="height: 100px; display:flex;" class="card-footer">
-                                        <div style="margin:25px 0 0 0" class="avatar-group">
-                                          {% for assignee in task.assignees.all %}
-                                            <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                              <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                            </a>
-                                          {% endfor %}
+                            {% for task in in_process %}
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div style="width:90%" class="card mt-3 mx-auto">
+                                  <div class="card shadow-info">
+                                    <div style="height:5px" class="mb-2 card-header d-flex">
+                                      {% if task.priority == "H" %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-primary">{{ task.get_priority_display }}</span>
                                         </div>
+                                      {% elif task.priority == "M" %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-warning">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% else %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-success">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% endif %}
+                                      <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
+                                    </div>
+                                    <div style="height: 60px" class="card-body mb-2">
+                                      <h5 class="h5 text-center"> {{ task.name }}</h5>
+                                    </div>
+                                    <div style="height: 100px;" class="card-footer d-flex">
+                                      <div style="margin-top: 25px; flex: 1" class="avatar-group">
+                                        {% for assignee in task.assignees.all %}
+                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                          </a>
+                                        {% endfor %}
                                       </div>
+                                      {% if task.tags.all %}
+                                        <div style="margin-top: 32px; flex:1">
+                                          {% if task.tags_left > 0 %}
+                                            <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white; margin: 0 2px" class="btn button-sm mx-n0">+{{ task.tags_left }}</button>
+                                          {% endif %}
+                                          <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white" class="btn button-sm mx-n0">{{ task.tags.first|truncatechars:"8" }}</button>
+                                        </div>
+                                      {% endif %}
                                     </div>
                                   </div>
-                                </a>
-                              {% endif %}
+                                </div>
+                              </a>
                             {% endfor %}
                           </div>
                         </div>
                         <div class="col-md-4 mt-3">
                           <div style="width:100%; background-color: rgba(6, 146, 72, .1);border: 1px solid #069248;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(6, 146, 72, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0" class="btn btn-success h-3 px-2">
+                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-success h-3 px-2">
                               <h5 style="color: #069248; font-size: 25px; font-weight:bold; padding: 0 10px">COMPLETED</h5>
+                              <span style="background-color:rgb(6, 146, 72); color: white; width:34px; height:30px; margin: 0 0 0 88px" class="badge">{{ completed.count }}</span>
                             </div>
                             <a style="width: 90%; margin: 0 5%; border: 1px solid #069248;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
                               <svg style="color: #069248; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
-                            {% for task in task_list %}
-                              {% if task.is_completed %}
-                                <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                  <div style="width:90%" class="card mt-3 mx-auto">
-                                    <div class="card shadow-success">
-                                      <div style="display: flex; height: 5px" class="mb-2 card-header">
-                                        {% if task.priority in "H" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-primary">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% elif task.priority in "M" %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-warning">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% else %}
-                                          <div style="flex: 1;" class="avatar-group">
-                                            <span class="badge bg-gradient-success">{{ task.get_priority_display }}</span>
-                                          </div>
-                                        {% endif %}
-                                        <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
-                                      </div>
-                                      <div style="height: 60px" class="card-body mb-2">
-                                        <h5 class="h5 text-center"> {{ task.name }}</h5>
-                                      </div>
-                                      <div style="height: 100px; display:flex;" class="card-footer">
-                                        <div style="margin:25px 0 0 0" class="avatar-group">
-                                          {% for assignee in task.assignees.all %}
-                                            <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                              <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                            </a>
-                                          {% endfor %}
+                            {% for task in completed %}
+                              <a href="{% url 'task_manager:task-detail' pk=task.id %}">
+                                <div style="width:90%" class="card mt-3 mx-auto">
+                                  <div class="card shadow-success">
+                                    <div style="height: 5px" class="mb-2 card-header d-flex">
+                                      {% if task.priority == "H" %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-primary">{{ task.get_priority_display }}</span>
                                         </div>
+                                      {% elif task.priority == "M" %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-warning">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% else %}
+                                        <div style="flex: 1;">
+                                          <span class="badge bg-success">{{ task.get_priority_display }}</span>
+                                        </div>
+                                      {% endif %}
+                                      <p style="margin: 5px 0 0 20px" class="text-muted text-sm text-center"><i>#{{ task.task_type.name }}</i></p>
+                                    </div>
+                                    <div style="height: 60px" class="card-body mb-2">
+                                      <h5 class="h5 text-center"> {{ task.name }}</h5>
+                                    </div>
+                                    <div style="height: 100px;" class="card-footer d-flex">
+                                      <div style="margin-top: 25px; flex: 1" class="avatar-group">
+                                        {% for assignee in task.assignees.all %}
+                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                          </a>
+                                        {% endfor %}
                                       </div>
+                                      {% if task.tags.all %}
+                                        <div style="margin-top: 32px; flex: 1">
+                                          {% if task.tags_left > 0 %}
+                                            <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white; margin: 0 2px" class="btn button-sm mx-n0">+{{ task.tags_left }}</button>
+                                          {% endif %}
+                                          <button style="float: right; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 10px; color: white" class="btn button-sm mx-n0">{{ task.tags.first|truncatechars:"8" }}</button>
+                                        </div>
+                                      {% endif %}
                                     </div>
                                   </div>
-                                </a>
-                              {% endif %}
+                                </div>
+                              </a>
                             {% endfor %}
                           </div>
                         </div>
