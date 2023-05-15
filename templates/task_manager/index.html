@@ -3,9 +3,6 @@
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-
-  {% include "includes/navigation.html" %}
-
   <header class="bg-gradient-dark">
     <div class="page-header section-height-75" style="background-image: url('static/img/task-management.webp');">
       <span class="mask bg-dark opacity-6"></span>
@@ -14,7 +11,11 @@
           <div class="col-lg-8 text-center mx-auto my-auto">
             <h1 class="text-white">Make your work easier</h1>
             <p class="lead mb-4 text-white opacity-8">Create tasks for you and your team. Organize your work and be productive</p>
-            <button type="submit" class="btn bg-white text-dark">Get started</button>
+            {% if user.is_authenticated %}
+              <a href="{% url 'task_manager:task-list' %}" class="btn bg-white text-dark">Get started</a>
+            {% else %}
+              <a href="{% url 'login'%}?next={{request.path}}" class="btn bg-white text-dark">Get started</a>
+            {% endif %}
             <h6 class="text-white mb-2 mt-5">Find us on</h6>
             <div class="d-flex justify-content-center">
               <a href="javascript:;"><i class="fab fa-facebook text-lg text-white me-4"></i></a>
@@ -45,34 +46,34 @@
   <body>
     <section class="section section-lg pt-0">
       <div class="container">
-          <div class="row">
-              <div class="col-md-4 col-lg-4 text-center">
-                  <div class="icon-box mb-4">
-                      <div class="icon icon-primary mb-4 fa-2x">
-                          <span class="fas fa-user"></span>
-                      </div>
-                      <h3 class="h5">Team Members</h3>
-                      <span class="counter display-3 text-gray d-block">{{ num_workers }}</span>
-                  </div>
+        <div class="row">
+          <div class="col-md-4 col-lg-4 text-center">
+            <div class="icon-box mb-4">
+              <div class="icon icon-primary mb-4 fa-2x">
+                  <span class="fas fa-user"></span>
               </div>
-              <div class="col-md-4 col-lg-4 text-center">
-                  <div class="icon-box mb-4">
-                      <div class="icon icon-primary mb-4 fa-2x">
-                          <span class="fas fa-money-check"></span>
-                      </div>
-                      <h3 class="h5">Tasks Available</h3>
-                      <span class="counter display-3 text-gray d-block">{{ num_tasks }}</span>
-                  </div>
+              <h3 class="h5">Team Members</h3>
+              <span class="counter display-3 text-gray d-block">{{ num_workers }}</span>
+            </div>
+          </div>
+            <div class="col-md-4 col-lg-4 text-center">
+              <div class="icon-box mb-4">
+                <div class="icon icon-primary mb-4 fa-2x">
+                    <span class="fas fa-money-check"></span>
+                </div>
+                <h3 class="h5">Tasks Available</h3>
+                <span class="counter display-3 text-gray d-block">{{ num_tasks }}</span>
               </div>
-              <div class="col-md-4 col-lg-4 text-center">
-                  <div class="icon-box mb-4">
-                      <div class="icon icon-primary mb-4 fa-2x">
-                          <span class="fas fa-laptop"></span>
-                      </div>
-                      <h3 class="h5">Task Types</h3>
-                      <span class="counter display-3 text-gray d-block">{{ num_task_types }}</span>
-                  </div>
+            </div>
+            <div class="col-md-4 col-lg-4 text-center">
+              <div class="icon-box mb-4">
+                <div class="icon icon-primary mb-4 fa-2x">
+                    <span class="fas fa-laptop"></span>
+                </div>
+                <h3 class="h5">Task Types</h3>
+                <span class="counter display-3 text-gray d-block">{{ num_task_types }}</span>
               </div>
+            </div>
           </div>
       </div>
     </section>
