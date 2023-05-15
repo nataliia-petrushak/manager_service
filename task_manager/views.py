@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q, Count
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
+from taggit.models import Tag
 
 from .forms import (
     TaskForm,
@@ -144,21 +145,44 @@ class WorkerDelete(LoginRequiredMixin, generic.DeleteView):
 def toggle_assign_to_task(request, pk):
     assignee = get_user_model().objects.get(id=request.user.id)
     if (
-        Task.objects.get(id=pk) in assignee.tasks.all()
-    ):
+        get_user_model().objects.get(id=pk) in assignee.tasks.all()
+    ):  # probably could check if car exists
         assignee.tasks.remove(pk)
     else:
         assignee.tasks.add(pk)
-    return HttpResponseRedirect(reverse_lazy(
-        "task_manager:task-detail", args=[pk]
-    ))
+    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.select_related(
         "task_type"
-    ).prefetch_related("assignees")
+    ).prefetch_related("assignees").prefetch_related("tags")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        tasks = Task.objects.annotate(assignees_count=Count("assignees"))
+        context = super(TaskListView, self).get_context_data(**kwargs)
+        context["tags"] = Task.tags.all()
+        context["completed"] = tasks.filter(is_completed=True)
+        context["in_process"] = tasks.filter(Q(is_completed=False) & Q(assignees_count__gt=0))
+        context["to_do"] = tasks.filter(assignees_count=0)
+        return context
+
+
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    task_list = Task.objects.annotate(assignees_count=Count("assignees")).filter(tags=tag)
+    # Filter posts by tag name
+    tags = Task.tags.all()
+    context = {
+        "tag": tag,
+        "tags": tags,
+        "task_list": task_list,
+        "to_do": task_list.filter(assignees_count=0),
+        "in_process": task_list.filter(Q(is_completed=False) & Q(assignees_count__gt=0)),
+        "completed": task_list.filter(is_completed=True)
+    }
+    return render(request, "task_manager/task_list.html", context)
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -177,7 +201,7 @@ class TaskCreate(LoginRequiredMixin, generic.CreateView):
 class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("task_manager:task-detail")
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskDelete(LoginRequiredMixin, generic.DeleteView):

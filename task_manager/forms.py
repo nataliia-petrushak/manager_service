@@ -1,7 +1,7 @@
-from crispy_forms.helper import FormHelper
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from taggit.forms import TagField
 
 from .models import Task, Project, TaskType, Position, Worker, Team
 
@@ -98,7 +98,7 @@ class TaskForm(forms.ModelForm):
     deadline = forms.DateField(widget=DateInput(attrs={
         "style": "padding: 8px 0 0 55px; height: 43px; width: 200px"
     }))
-    priority = forms.MultipleChoiceField(
+    priority = forms.ChoiceField(
         widget=forms.RadioSelect,
         choices=Task.PRIORITY_CHOICES
     )
@@ -109,7 +109,9 @@ class TaskForm(forms.ModelForm):
     assignees = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
+        required=False,
     )
+    tags = TagField(required=False)
 
     class Meta:
         model = Task
