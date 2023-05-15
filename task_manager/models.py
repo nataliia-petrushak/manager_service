@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import QuerySet, Q
+from taggit.managers import TaggableManager
 
 
 class TaskType(models.Model):
@@ -101,18 +102,11 @@ class Task(models.Model):
         related_name="tasks",
         blank=True
     )
+    tags = TaggableManager()
 
     def __str__(self) -> str:
         return f"{self.name} (priority: {self.priority}, deadline: {self.deadline})"
 
-    def days_to_deadline(self) -> int:
-        return (self.deadline - datetime.date.today()).days
-
-    def get_tasks_in_process(self) -> QuerySet:
-        return self.objects.filter(Q(is_completed=False), Q(assignees__isnull=False))
-
-    def get_completed_tasks(self) -> QuerySet:
-        return self.objects.filter(is_completed=True)
-
-    def get_to_do_tasks(self) -> QuerySet:
-        return self.objects.filter(assignees__isnull=True)
+    def tags_left(self) -> int:
+        count = self.tags.count() - 1
+        return count if count > 0 else 0
