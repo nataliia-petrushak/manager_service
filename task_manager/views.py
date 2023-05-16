@@ -152,36 +152,25 @@ def toggle_assign_to_task(request, pk):
     return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
 
 
-class TaskListView(LoginRequiredMixin, generic.ListView):
-    model = Task
-    queryset = Task.objects.select_related(
-        "task_type"
-    ).prefetch_related("assignees").prefetch_related("tags")
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        tasks = Task.objects.annotate(assignees_count=Count("assignees"))
-        context = super(TaskListView, self).get_context_data(**kwargs)
-        context["tags"] = Task.tags.all()
-        context["completed"] = tasks.filter(is_completed=True)
-        context["in_process"] = tasks.filter(Q(is_completed=False) & Q(assignees_count__gt=0))
-        context["to_do"] = tasks.filter(assignees_count=0)
-        return context
-
-
 @login_required
-def tagged(request, slug):
-    tag = get_object_or_404(Tag, slug=slug)
-    task_list = Task.objects.annotate(assignees_count=Count("assignees")).filter(tags=tag)
-    # Filter posts by tag name
-    tags = Task.tags.all()
+def tasks_of_project_by_tags(request, pk: int, slug: str = None):
+    project = get_object_or_404(Project, pk=pk)
+    task_list = project.tasks.annotate(assignees_count=Count("assignees"))
+    if slug:
+        tag = get_object_or_404(Tag, slug=slug)
+        task_list = task_list.filter(tags=tag)
     context = {
-        "tag": tag,
-        "tags": tags,
+        "project": project,
         "task_list": task_list,
+        "tags": Task.tags.all(),
         "to_do": task_list.filter(assignees_count=0),
-        "in_process": task_list.filter(Q(is_completed=False) & Q(assignees_count__gt=0)),
-        "completed": task_list.filter(is_completed=True)
+        "in_process": task_list.filter(
+            Q(is_completed=False) & Q(assignees_count__gt=0)
+        ),
+        "completed": task_list.filter(is_completed=True),
+        "id": pk
     }
+
     return render(request, "task_manager/task_list.html", context)
 
 
