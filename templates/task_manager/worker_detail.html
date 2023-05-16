@@ -160,71 +160,71 @@
                               </tbody>
                             </table>
                           {% endif %}
-                          <table class="table table-borderless">
-                            <thead>
-                              <tr class="p-0">
-                                <td class="w200 p-0" scope="col">
-                                  <small class="btn btn-info h-5 px-2">IN PROGRESS</small>
-                                </td>
-                                <td class="text-center w100 p-0 py-2" scope="col">
-                                  <small class="text-muted">CO-WORKERS</small>
-                                </td>
-                                <td class="text-center w100 p-0 py-2" scope="col">
-                                  <small class="text-muted">DEADLINE</small>
-                                </td>
-                                <td class="text-center w50 p-0 py-2" scope="col">
-                                  <small class="text-muted">PRIORITY</small>
-                                </td>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for task in worker.tasks.all %}
-                                {% if not task.is_completed %}
-                                <tr class="border-bottom bg-white">
-                                  <td style="border-radius:10px;" class="align-middle">
-                                    <div style="width:300px" class="d-flex align-items-center">
-                                      <span class="bg-violet mx-2">  </span>
-                                      <a class="link" href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
-                                    </div>
+                          {% if worker.in_progress_tasks %}
+                            <table class="table table-borderless">
+                              <thead>
+                                <tr class="p-0">
+                                  <td class="w200 p-0" scope="col">
+                                    <small class="btn btn-info h-5 px-2">IN PROGRESS</small>
                                   </td>
-                                  <td style="border-radius:10px" class="align-middle">
-                                    <div class="row text-center">
-                                      <div class="col-12 mt-1">
-                                        <div class="avatar-group">
-                                          {% for assignee in task.assignees.all %}
-                                            {% if not worker.id == assignee.id %}
-                                            <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
-                                               class="avatar avatar-sm rounded-circle"
-                                               data-bs-toggle="tooltip"
-                                               data-bs-placement="bottom"
-                                               title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                                              <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
-                                            </a>
-                                            {% endif %}
-                                          {% endfor %}
-                                        </div>
-                                      </div>
-                                    </div>
+                                  <td class="text-center w100 p-0 py-2" scope="col">
+                                    <small class="text-muted">CO-WORKERS</small>
                                   </td>
-                                  <td style="border-radius:10px;" class="text-center align-middle">
-                                    <div class="col-12">
-                                      <span class="far fa-calendar-alt text-muted">  {{ task.deadline }}</span>
-                                    </div>
+                                  <td class="text-center w100 p-0 py-2" scope="col">
+                                    <small class="text-muted">DEADLINE</small>
                                   </td>
-                                  <td style="width:150px; border-radius:10px;" class="align-middle">
-                                    {% if task.priority in "H" %}
-                                      <span style="width:140px" class="btn btn-secondary pink">HIGH PRIORITY</span>
-                                    {% elif task.priority in "M" %}
-                                      <span style="width:140px" class="btn btn-secondary yellow">MEDIUM PRIORITY</span>
-                                    {% elif task.priority in "L" %}
-                                      <span style="width:140px" class="btn btn-secondary violet">LOW PRIORITY</span>
-                                    {% endif %}
+                                  <td class="text-center w50 p-0 py-2" scope="col">
+                                    <small class="text-muted">PRIORITY</small>
                                   </td>
                                 </tr>
-                                {% endif %}
-                              {% endfor %}
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                {% for task in worker.in_progress_tasks %}
+                                  <tr class="border-bottom bg-white">
+                                    <td style="border-radius:10px;" class="align-middle">
+                                      <div style="width:300px" class="d-flex align-items-center">
+                                        <span class="bg-violet mx-2">  </span>
+                                        <a class="link" href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+                                      </div>
+                                    </td>
+                                    <td style="border-radius:10px" class="align-middle">
+                                      <div class="row text-center">
+                                        <div class="col-12 mt-1">
+                                          <div class="avatar-group">
+                                            {% for assignee in task.assignees.all %}
+                                              {% if not worker.id == assignee.id %}
+                                              <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                                                 class="avatar avatar-sm rounded-circle"
+                                                 data-bs-toggle="tooltip"
+                                                 data-bs-placement="bottom"
+                                                 title="{{ assignee.first_name }} {{ assignee.last_name }}">
+                                                <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                              </a>
+                                              {% endif %}
+                                            {% endfor %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td style="border-radius:10px;" class="text-center align-middle">
+                                      <div class="col-12">
+                                        <span class="far fa-calendar-alt text-muted">  {{ task.deadline }}</span>
+                                      </div>
+                                    </td>
+                                    <td style="width:150px; border-radius:10px;" class="align-middle">
+                                      {% if task.priority in "H" %}
+                                        <span style="width:140px" class="btn btn-secondary pink">HIGH PRIORITY</span>
+                                      {% elif task.priority in "M" %}
+                                        <span style="width:140px" class="btn btn-secondary yellow">MEDIUM PRIORITY</span>
+                                      {% elif task.priority in "L" %}
+                                        <span style="width:140px" class="btn btn-secondary violet">LOW PRIORITY</span>
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          {% endif %}
                           {% if worker.finished_tasks %}
                             <table style="width: 100%" class="table table-borderless">
                               <thead>
