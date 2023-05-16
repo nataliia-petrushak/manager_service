@@ -16,27 +16,47 @@
             <div class="row">
               <section class="section section-lg">
                 <div class="container">
+                  <div class="row text-center py-3 mt-3">
+                    <div class="col-8 mx-auto mt-n5 mb-5">
+                      <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                          {% for project in user.team.projects.all %}
+                            <li class="nav-item">
+                            <a class="nav-link mb-0 px-0 py-1 {% if id == project.id %} active {% endif %}"
+                               data-bs-toggle="tab"
+                               href="{% url 'task_manager:project-tasks' pk=project.id %}"
+                               role="tab"
+                               aria-controls="project.id"
+                               aria-selected="true">
+                              {{ project.name }}
+                            </a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                   <div class="row mb-lg-4 mx-1">
-                  <div class="col-12 col-md-8 col-lg-8">
+                    <div class="col-12 col-md-8 col-lg-8">
                     <h2 style="color:hotpink;" class="h1 mb-2">Task Board</h2>
                     {% if task_list %}
-                    <p class="lead">There is always what to do. Choose your task</p>
+                      <p class="lead">There is always what to do. Choose your task</p>
                     {% else %}
-                    <p class="lead">There are no tasks for now!</p>
+                      <p class="lead">There are no tasks for now!</p>
                     {% endif %}
                   </div>
                     {% if tags.count > 0 %}
                       <div style="width: 100%" class="d-flex">
-                      <label class="p me-2">Tags:</label>
-                      {% for tag in tags %}
-                        <a
+                        <label class="p me-2">Tags:</label>
+                        {% for tag in tags %}
+                          <a
                             style="background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 3px; margin: 0 3px; color: white"
                             class="btn button-sm"
-                            href="{% url 'task_manager:tagged' slug=tag.slug %}">
+                            href="{% url 'task_manager:tagged' pk=project.id slug=tag.slug %}">
                           {{ tag.name }}
                         </a>
-                      {% endfor %}
-                    </div>
+                        {% endfor %}
+                      </div>
                     {% endif %}
                   </div>
                 </div>
@@ -45,19 +65,29 @@
                     <div style="width:100%" class="container">
                       <div class="row">
                         <div class="col-md-4 mt-3">
-                          <div style="width:100%; background-color: rgba(255, 0, 127, .1);border: 1px solid #FF007F;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-primary h-1 px-2 ">
-                              <h5 style="color: #FB0778;font-size: 25px; font-weight:bold; padding:0 10px;">TO DO</h5>
-                              <span style="background-color:rgb(255, 0, 127); color: white; width:34px; height:30px; margin: 0 0 0 157px" class="badge">{{ to_do.count }}</span>
+                          <div style="width:100%; background-color: rgba(255, 0, 127, .1); border: 1px solid #FF007F; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16); padding:0 0 20px 0">
+                            <div style="width:100%; box-shadow: none; border:none;"
+                                 class="d-flex btn btn-primary h-1 px-2 pt-4 bg-transparent">
+                              <h5 style="color: #FB0778;" class="ps-2 h4 font-weight-bold me-9">TO DO</h5>
+                              <span style="background-color:rgb(255, 0, 127); width:34px; height:30px;"
+                                    class="badge text-white ms-3">{{ to_do.count }}</span>
                             </div>
-                            <a style="width: 90%; margin: 0 5%; border: 1px solid #FF007F;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
-                              <svg style="color: #FF007F; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <a style="width: 90%; border: 1px solid #FF007F;"
+                               class="btn btn-gradient-priority mx-3"
+                               href="{% url 'task_manager:task-create' %}">
+                              <svg style="color: #FF007F; font-weight: bold"
+                                   xmlns="http://www.w3.org/2000/svg"
+                                   width="30"
+                                   height="30"
+                                   fill="currentColor"
+                                   class="bi bi-plus-lg"
+                                   viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
                             {% for task in to_do %}
                               <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                <div style="width:90%" class="card mt-3 mx-auto">
+                                <div style="width:90%" class="card mt-1 mx-auto mb-3">
                                   <div class="card shadow-primary">
                                     <div style="height:5px" class="mb-2 card-header d-flex">
                                       {% if task.priority == "H" %}
@@ -96,18 +126,28 @@
                         </div>
                         <div class="col-md-4 mt-3">
                           <div style="width:100%; background-color: rgba(111, 0, 255, .1); border: 1px solid #6f00ff; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(111, 0, 255, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-info h-2 px-2">
-                              <h5 style="color: #6f00ff; font-size: 25px; font-weight:bold; padding:0 10px">IN PROGRESS</h5>
-                              <span style="background-color:rgb(111, 0, 255); color: white; width:34px; height:30px; margin: 0 0 0 72px" class="badge">{{ in_process.count }}</span>
+                            <div style="width:100%; box-shadow: none; border:none;"
+                                 class="d-flex btn btn-primary h-1 px-2 pt-4 bg-transparent">
+                              <h5 style="color: #6f00ff;" class="ps-2 h4 font-weight-bold me-5">IN PROGRESS</h5>
+                              <span style="background-color:rgb(111, 0, 255); width:34px; height:30px;"
+                                    class="badge text-white ms-5">{{ in_process.count }}</span>
                             </div>
-                            <a style="width: 90%; margin: 0 5%; border: 1px solid #6f00ff;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
-                              <svg style="color: #6f00ff; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <a style="width: 90%; border: 1px solid #6f00ff;"
+                               class="btn btn-gradient-priority mx-3"
+                               href="{% url 'task_manager:task-create' %}">
+                              <svg style="color: #6f00ff; font-weight: bold"
+                                   xmlns="http://www.w3.org/2000/svg"
+                                   width="30"
+                                   height="30"
+                                   fill="currentColor"
+                                   class="bi bi-plus-lg"
+                                   viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
                             {% for task in in_process %}
                               <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                <div style="width:90%" class="card mt-3 mx-auto">
+                                <div style="width:90%" class="card mt-1 mb-3 mx-auto">
                                   <div class="card shadow-info">
                                     <div style="height:5px" class="mb-2 card-header d-flex">
                                       {% if task.priority == "H" %}
@@ -131,8 +171,10 @@
                                     <div style="height: 100px;" class="card-footer d-flex">
                                       <div style="margin-top: 25px; flex: 1" class="avatar-group">
                                         {% for assignee in task.assignees.all %}
-                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                            <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                                             class="avatar avatar-sm rounded-circle"
+                                             data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                            <img src="{% static 'img/team/'|add:assignee.username|add:'.jpeg' %}">
                                           </a>
                                         {% endfor %}
                                       </div>
@@ -152,19 +194,28 @@
                           </div>
                         </div>
                         <div class="col-md-4 mt-3">
-                          <div style="width:100%; background-color: rgba(6, 146, 72, .1);border: 1px solid #069248;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(6, 146, 72, 0.16); padding:0 0 20px 0">
-                            <div style="width:100%; background-color: transparent; box-shadow: none; border:none; padding:20px 0 0 0; display: inline-flex" class="btn btn-success h-3 px-2">
-                              <h5 style="color: #069248; font-size: 25px; font-weight:bold; padding: 0 10px">COMPLETED</h5>
-                              <span style="background-color:rgb(6, 146, 72); color: white; width:34px; height:30px; margin: 0 0 0 88px" class="badge">{{ completed.count }}</span>
+                          <div style="width:100%; background-color: rgba(6, 146, 72, .1); border: 1px solid #069248; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(6, 146, 72, 0.16); padding:0 0 20px 0">
+                            <div style="width:100%; box-shadow: none; border: none;"
+                                 class="btn btn-success h-1 pt-4 px-2 bg-transparent d-flex">
+                              <h5 style="color: #069248;" class="ps-2 h4 font-weight-bold me-6">COMPLETED</h5>
+                              <span style="background-color:rgb(6, 146, 72); width:34px; height:30px; font-size:14px" class="badge text-white pt-2 px-2 ms-5">{{ completed.count }}</span>
                             </div>
-                            <a style="width: 90%; margin: 0 5%; border: 1px solid #069248;" class="btn btn-gradient-priority" href="{% url 'task_manager:task-create' %}">
-                              <svg style="color: #069248; font-weight: bold" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                            <a style="width: 90%; border: 1px solid #069248;"
+                               class="btn btn-gradient-priority mt-n2 mx-3"
+                               href="{% url 'task_manager:task-create' %}">
+                              <svg style="color: #069248; font-weight: bold"
+                                   xmlns="http://www.w3.org/2000/svg"
+                                   width="30" height="30"
+                                   fill="currentColor"
+                                   class="bi bi-plus-lg"
+                                   viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                               </svg>
                             </a>
                             {% for task in completed %}
                               <a href="{% url 'task_manager:task-detail' pk=task.id %}">
-                                <div style="width:90%" class="card mt-3 mx-auto">
+                                <div style="width:90%" class="card mt-1 mb-3 mx-auto">
                                   <div class="card shadow-success">
                                     <div style="height: 5px" class="mb-2 card-header d-flex">
                                       {% if task.priority == "H" %}
