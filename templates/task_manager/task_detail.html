@@ -71,7 +71,7 @@
                                 <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
                                  class="text-muted avatar-sm"
                                  title="{{ assignee.first_name }} {{ assignee.last_name }}">
-                                  <img style="border-radius: 50% !important;" src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                  <img style="border-radius: 50% !important;" src="{% static 'img/team/'|add:assignee.username|add:'.jpeg' %}">
                                   <p style="margin: 3px; display: inline">{{ assignee.first_name }} {{assignee.last_name }}</p>
                                 </a>
                               </li>

@@ -22,7 +22,8 @@
             <div class="row">
               <div class="col-12 mx-auto">
                 <div class="mt-n8 mt-md-n9 text-center">
-                  <img class="avatar avatar-xxl shadow-xl position-relative z-index-2" src="{% static 'img/team/'|add:worker.first_name|add:'.jpeg' %}">
+                  <img class="avatar avatar-xxl shadow-xl position-relative z-index-2"
+                       src="{% static 'img/team/'|add:worker.username|add:'.jpeg' %}">
                 </div>
                 <div class="row py-5">
                   <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto mb-4">

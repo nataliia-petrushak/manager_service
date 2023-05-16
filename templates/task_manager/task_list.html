@@ -188,8 +188,11 @@
                                     <div style="height: 100px;" class="card-footer d-flex">
                                       <div style="margin-top: 25px; flex: 1" class="avatar-group">
                                         {% for assignee in task.assignees.all %}
-                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                            <img src="{% static 'img/team/'|add:assignee.first_name|add:'.jpeg' %}">
+                                          <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                                             class="avatar avatar-sm rounded-circle"
+                                             data-bs-toggle="tooltip"
+                                             data-bs-placement="bottom">
+                                            <img src="{% static 'img/team/'|add:assignee.username|add:'.jpeg' %}">
                                           </a>
                                         {% endfor %}
                                       </div>
