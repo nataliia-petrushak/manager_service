@@ -10,7 +10,7 @@ from .views import (
     PositionCreate,
     PositionUpdate,
     PositionDelete,
-    WorkerListView,
+    TeamDetailView,
     WorkerDetailView,
     WorkerCreate,
     WorkerUpdate,
@@ -68,9 +68,9 @@ urlpatterns = [
         name="position-delete"
     ),
     path(
-        "workers/",
-        WorkerListView.as_view(),
-        name="worker-list"
+        "teams/<int:pk>/",
+        TeamDetailView.as_view(),
+        name="team-detail"
     ),
     path(
         "workers/<int:pk>/",

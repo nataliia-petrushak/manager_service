@@ -112,9 +112,8 @@ class PositionDelete(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:position-list")
 
 
-class WorkerListView(LoginRequiredMixin, generic.ListView):
-    model = Worker
-    queryset = get_user_model().objects.select_related("position")
+class TeamDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Team
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
@@ -212,14 +211,6 @@ class TaskDelete(LoginRequiredMixin, generic.DeleteView):
 
 def dashboard(request):
 
-    projects = Project.objects.annotate(tasks_count=Count("tasks"))
-    project_info = []
-    for project in projects:
-        progress = round(project.tasks.filter(
-            is_completed=True
-        ).count() / project.tasks_count * 10) * 10
-        project_info.append((project, progress))
-
     user_info = sorted([
         [user, user.finished_tasks().count()]
         for user in get_user_model().objects.all()
@@ -228,7 +219,7 @@ def dashboard(request):
     teams = Team.objects.annotate(projects_count=Count("projects"))
 
     context = {
-        "projects": project_info,
+        "projects": Project.objects.select_related("team"),
         "users": user_info[:10],
         "teams": teams
     }
