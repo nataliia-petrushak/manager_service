@@ -15,14 +15,13 @@ from .views import (
     WorkerCreate,
     WorkerUpdate,
     WorkerDelete,
-    TaskListView,
     TaskDetailView,
     TaskCreate,
     TaskUpdate,
     TaskDelete,
     toggle_assign_to_task,
-    tagged,
-    dashboard
+    dashboard,
+    tasks_of_project_by_tags,
 )
 
 urlpatterns = [
@@ -93,10 +92,15 @@ urlpatterns = [
         name="worker-delete"
     ),
     path(
-        "tasks/",
-        TaskListView.as_view(),
-        name="task-list"
+        "project/<int:pk>/",
+        tasks_of_project_by_tags,
+        name="project-tasks"
     ),
+    path(
+        "project/<int:pk>/<slug:slug>/",
+        tasks_of_project_by_tags,
+        name="tagged"
+        ),
     path(
         "tasks/<int:pk>/",
         TaskDetailView.as_view(),
@@ -121,11 +125,6 @@ urlpatterns = [
         "tasks/<int:pk>/toggle-assign/",
         toggle_assign_to_task,
         name="toggle-task-assign",
-    ),
-    path(
-        "tag/<slug:slug>/",
-        tagged,
-        name="tagged"
     ),
     path(
         "dashboard/",
