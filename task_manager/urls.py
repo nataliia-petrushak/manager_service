@@ -22,6 +22,7 @@ from .views import (
     TaskDelete,
     toggle_assign_to_task,
     tagged,
+    dashboard
 )
 
 urlpatterns = [
@@ -125,6 +126,11 @@ urlpatterns = [
         "tag/<slug:slug>/",
         tagged,
         name="tagged"
+    ),
+    path(
+        "dashboard/",
+        dashboard,
+        name="dashboard"
     ),
 ]
 

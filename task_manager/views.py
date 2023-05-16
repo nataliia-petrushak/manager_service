@@ -16,7 +16,7 @@ from .forms import (
     PositionSearchForm,
     WorkerCreateForm
 )
-from .models import Task, TaskType, Position, Worker
+from .models import Task, TaskType, Position, Worker, Project, Team
 
 
 def index(request):
@@ -169,6 +169,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
+@login_required
 def tagged(request, slug):
     tag = get_object_or_404(Tag, slug=slug)
     task_list = Task.objects.annotate(assignees_count=Count("assignees")).filter(tags=tag)
@@ -207,3 +208,29 @@ class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
 class TaskDelete(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task_manager:task-list")
+
+
+def dashboard(request):
+
+    projects = Project.objects.annotate(tasks_count=Count("tasks"))
+    project_info = []
+    for project in projects:
+        progress = round(project.tasks.filter(
+            is_completed=True
+        ).count() / project.tasks_count * 10) * 10
+        project_info.append((project, progress))
+
+    user_info = sorted([
+        [user, user.finished_tasks().count()]
+        for user in get_user_model().objects.all()
+    ], key=lambda x: x[1], reverse=True)
+
+    teams = Team.objects.annotate(projects_count=Count("projects"))
+
+    context = {
+        "projects": project_info,
+        "users": user_info[:10],
+        "teams": teams
+    }
+
+    return render(request, "task_manager/dashboard.html", context)
