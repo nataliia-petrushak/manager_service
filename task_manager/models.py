@@ -33,31 +33,20 @@ class Team(models.Model):
         return self.name
 
 
-class Project(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    is_completed = models.BooleanField()
-    deadline = models.DateField()
-    team = models.OneToOneField(Team, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"{self.name} (team: {self.team.name})"
-
-
 class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
         related_name="workers",
-        null=True,
-        default=None,
+        blank=True,
+        null=True
     )
     team = models.ForeignKey(
         Team,
         on_delete=models.CASCADE,
         related_name="workers",
-        default=None,
         null=True,
+        blank=True,
     )
 
     def __str__(self) -> str:
@@ -66,8 +55,31 @@ class Worker(AbstractUser):
     def finished_tasks(self) -> QuerySet:
         return self.tasks.filter(is_completed=True)
 
+    def in_progress_tasks(self) -> QuerySet:
+        return self.tasks.filter(
+            Q(deadline__gt=datetime.date.today()) & Q(is_completed=False))
+
     def overdue_tasks(self) -> QuerySet:
-        return self.tasks.filter(Q(deadline__lt=datetime.date.today()), Q(is_completed=False))
+        return self.tasks.filter(
+            Q(deadline__lt=datetime.date.today()), Q(is_completed=False)
+        )
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    is_completed = models.BooleanField()
+    deadline = models.DateField()
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="projects"
+    )
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Task(models.Model):
@@ -102,7 +114,7 @@ class Task(models.Model):
         related_name="tasks",
         blank=True
     )
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self) -> str:
         return f"{self.name} (priority: {self.priority}, deadline: {self.deadline})"
