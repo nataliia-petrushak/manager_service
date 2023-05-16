@@ -81,6 +81,13 @@ class Project(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def progress(self) -> int:
+        tasks = self.tasks.count()
+        progress = round(self.tasks.filter(
+            is_completed=True
+        ).count() / tasks * 10) * 10
+        return progress
+
 
 class Task(models.Model):
 
