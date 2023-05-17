@@ -6,41 +6,37 @@
 
 {% block content %}
 
-  <div class="row">
-    <div style="width: 18%;">
-      {% include "includes/sidebar.html" %}
-    </div>
-    <div style="width: 82%">
-      <header>
-        <div class="page-header min-height-300" style="background-image: url({% static 'img/task-type-list.jpeg' %});">
-          <span class="mask bg-gradient-dark opacity-4"></span>
-        </div>
-      </header>
+{% include "includes/sidebar.html" %}
 
-      <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-        <section class="py-sm-7 py-5 position-relative">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 mx-auto">
-                <div class="row py-5">
-                  <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto mb-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <h2 class="mb-4">{{ object|yesno:"Update,Create" }} Task Type</h2>
-                    </div>
-                    <br><br>
-                    <form action="" method="post">
-                      {% csrf_token %}
-                      {{ form|crispy }}
-                      <input type="submit" value="Submit" class="btn bg-gradient-dark mx-auto">
-                      <a class="btn bg-gradient-light mx-4" href="{% url 'task_manager:task-type-list' %}">Cancel</a>
-                    </form>
+  <div class="row">
+    <header>
+      <div class="page-header min-height-300" style="background-image: url({% static 'img/task-type-list.jpeg' %});">
+        <span class="mask bg-gradient-dark opacity-4"></span>
+      </div>
+    </header>
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+      <section class="py-sm-7 py-5 position-relative">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 mx-auto">
+              <div class="row py-5">
+                <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto mb-4">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-4">{{ object|yesno:"Update,Create" }} Task Type</h2>
                   </div>
+                  <br><br>
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" value="Submit" class="btn bg-gradient-dark mx-auto">
+                    <a class="btn bg-gradient-light mx-4" href="{% url 'task_manager:task-type-list' %}">Cancel</a>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   </div>
 

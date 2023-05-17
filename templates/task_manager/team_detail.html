@@ -72,83 +72,83 @@
           <p>There are no members in your team! </p>
         {% endif %}
         <div class="row my-6 mx-4">
-            <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
-              <div style="background-color: rgba(255, 255, 255, .9); border: 1px solid black; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.46);" class="card pb-4">
-                <div style="background-color: transparent; border-radius: 20px;" class="card-header pb-0">
-                  <div class="row">
-                    <div class="col-lg-12 col-12">
-                      <div style="display: inline-flex">
-                        <h5 style="font-size: 25px; font-weight:bold;" class="text-dark me-12">TEAM'S PROJECTS</h5>
-                        <p class="text-sm mb-0 ms-12">
-                          <span style="font-size: 14px; width:34px; height:30px;" class="badge mt-auto ms-12 bg-dark text-white">{{ team.projects.count }}</span>
-                        </p>
-                      </div>
+          <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
+            <div style="background-color: rgba(255, 255, 255, .9); border: 1px solid black; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.46);" class="card pb-4">
+              <div style="background-color: transparent; border-radius: 20px;" class="card-header pb-0">
+                <div class="row">
+                  <div class="col-lg-12 col-12">
+                    <div style="display: inline-flex">
+                      <h5 style="font-size: 25px; font-weight:bold;" class="text-dark me-12">TEAM'S PROJECTS</h5>
+                      <p class="text-sm mb-0 ms-12">
+                        <span style="font-size: 14px; width:34px; height:30px;" class="badge mt-auto ms-12 bg-dark text-white">{{ team.projects.count }}</span>
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div class="card-body px-0 pb-2">
-                  <div class="table-responsive">
-                    <table class="table align-items-center mb-0">
-                      <thead>
+              </div>
+              <div class="card-body px-0 pb-2">
+                <div class="table-responsive">
+                  <table class="table align-items-center mb-0">
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase text-dark text-center text-xxs font-weight-bolder opacity-8">Companies</th>
+                        <th class="text-uppercase text-dark text-xxs text-center font-weight-bolder opacity-8 ps-2">Tasks</th>
+                        <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-8">Deadline</th>
+                        <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-8">Completion</th>
+                        <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-8 ps-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for project in team.projects.all %}
                         <tr>
-                          <th class="text-uppercase text-dark text-center text-xxs font-weight-bolder opacity-8">Companies</th>
-                          <th class="text-uppercase text-dark text-xxs text-center font-weight-bolder opacity-8 ps-2">Tasks</th>
-                          <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-8">Deadline</th>
-                          <th class="text-center text-uppercase text-dark text-xxs font-weight-bolder opacity-8">Completion</th>
-                          <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-8 ps-2"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for project in team.projects.all %}
-                          <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-strava text-dark" viewBox="0 0 16 16">
-                                  <path d="M6.731 0 2 9.125h2.788L6.73 5.497l1.93 3.628h2.766L6.731 0zm4.694 9.125-1.372 2.756L8.66 9.125H6.547L10.053 16l3.484-6.875h-2.112z"/>
-                                </svg>
-                              </div>
-                              <div class="d-flex flex-column justify-content-center mx-3">
-                                <h6 class="mb-0 text-sm text-dark">{{ project.name }}</h6>
+                        <td>
+                          <div class="d-flex px-2 py-1">
+                            <div>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-strava text-dark" viewBox="0 0 16 16">
+                                <path d="M6.731 0 2 9.125h2.788L6.73 5.497l1.93 3.628h2.766L6.731 0zm4.694 9.125-1.372 2.756L8.66 9.125H6.547L10.053 16l3.484-6.875h-2.112z"/>
+                              </svg>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center mx-3">
+                              <h6 class="mb-0 text-sm text-dark">{{ project.name }}</h6>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <p class="text-center text-dark">{{ project.tasks.count }}</p>
+                        </td>
+                        <td class="align-middle text-center text-dark text-sm">
+                          <svg style="margin: 0 3px 4px 0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                            <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
+                          </svg>
+                          <span class="text-xs font-weight-bold text-dark"> {{ project.deadline }} </span>
+                        </td>
+                        <td class="align-middle">
+                          <div class="progress-wrapper w-75 mx-auto">
+                            <div class="progress-info">
+                              <div class="progress-percentage">
+                                <span class="text-xs text-dark font-weight-bold">{{ project.progress }}%</span>
                               </div>
                             </div>
-                          </td>
-                          <td>
-                            <p class="text-center text-dark">{{ project.tasks.count }}</p>
-                          </td>
-                          <td class="align-middle text-center text-dark text-sm">
-                            <svg style="margin: 0 3px 4px 0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
-                              <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
-                              <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
-                            </svg>
-                            <span class="text-xs font-weight-bold text-dark"> {{ project.deadline }} </span>
-                          </td>
-                          <td class="align-middle">
-                            <div class="progress-wrapper w-75 mx-auto">
-                              <div class="progress-info">
-                                <div class="progress-percentage">
-                                  <span class="text-xs text-dark font-weight-bold">{{ project.progress }}%</span>
-                                </div>
-                              </div>
-                              <div class="progress">
-                                <div class="progress-bar bg-gradient-info w-{{ project.progress }}" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
+                            <div class="progress">
+                              <div class="progress-bar bg-gradient-info w-{{ project.progress }}" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                          </td>
-                          <td class="text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle-fill text-dark" viewBox="0 0 16 16">
-                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
-                            </svg>
-                          </td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                  </div>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle-fill text-dark" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+                          </svg>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
+          </div>
           </div>
       </div>
     </section>
