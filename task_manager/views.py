@@ -23,9 +23,8 @@ def index(request):
     """View function for the home page of the site."""
 
     context = {
-        "num_tasks": Task.objects.count(),
-        "num_task_types": TaskType.objects.count(),
-        "num_positions": Position.objects.count(),
+        "num_teams": Team.objects.count(),
+        "num_projects": Project.objects.count(),
         "num_workers": get_user_model().objects.count()
     }
     return render(request, "task_manager/index.html", context=context)
@@ -162,7 +161,7 @@ def tasks_of_project_by_tags(request, pk: int, slug: str = None):
     context = {
         "project": project,
         "task_list": task_list,
-        "tags": Task.tags.all(),
+        "tags": Task.tags.filter(task__project=project),
         "to_do": task_list.filter(assignees_count=0),
         "in_process": task_list.filter(
             Q(is_completed=False) & Q(assignees_count__gt=0)
