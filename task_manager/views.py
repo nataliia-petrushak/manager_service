@@ -131,7 +131,7 @@ class WorkerUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Worker
     form_class = WorkerCreateForm
     template_name = "task_manager/worker_update.html"
-    success_url = reverse_lazy("task_manager:worker-list")
+    success_url = reverse_lazy("task_manager:index")
 
 
 class WorkerDelete(LoginRequiredMixin, generic.DeleteView):
@@ -183,18 +183,26 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 class TaskCreate(LoginRequiredMixin, generic.CreateView):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("task_manager:task-list")
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:project-tasks", kwargs={
+            "pk": self.request.POST.get("project")
+        })
 
 
 class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Task
     form_class = TaskForm
-    success_url = reverse_lazy("task_manager:task-list")
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:project-tasks", kwargs={
+            "pk": self.request.POST.get("project")
+        })
 
 
 class TaskDelete(LoginRequiredMixin, generic.DeleteView):
     model = Task
-    success_url = reverse_lazy("task_manager:task-list")
+    success_url = reverse_lazy("task_manager:index")
 
 
 def dashboard(request):
