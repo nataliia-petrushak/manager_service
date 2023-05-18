@@ -143,8 +143,8 @@ class WorkerDelete(LoginRequiredMixin, generic.DeleteView):
 def toggle_assign_to_task(request, pk):
     assignee = get_user_model().objects.get(id=request.user.id)
     if (
-        get_user_model().objects.get(id=pk) in assignee.tasks.all()
-    ):  # probably could check if car exists
+        Task.objects.get(id=pk) in assignee.tasks.all()
+    ):  # probably could check if assignee exists
         assignee.tasks.remove(pk)
     else:
         assignee.tasks.add(pk)
@@ -221,3 +221,21 @@ def dashboard(request):
     }
 
     return render(request, "task_manager/dashboard.html", context)
+
+
+class ProjectDetailView(generic.DetailView):
+    model = Project
+
+
+@login_required
+def toggle_assign_to_project(request, pk):
+    team = Team.objects.get(id=request.user.team.id)
+    project = Project.objects.get(id=pk)
+    if (
+        project in team.projects.all()
+    ):  # probably could check if car exists
+        team.projects.remove(project)
+    else:
+        team.projects.add(project)
+    return HttpResponseRedirect(reverse_lazy("task_manager:project-detail", args=[pk]))
+

@@ -10,6 +10,7 @@ from .views import (
     PositionCreate,
     PositionUpdate,
     PositionDelete,
+    ProjectDetailView,
     TeamDetailView,
     WorkerDetailView,
     WorkerCreate,
@@ -20,6 +21,7 @@ from .views import (
     TaskUpdate,
     TaskDelete,
     toggle_assign_to_task,
+    toggle_assign_to_project,
     dashboard,
     tasks_of_project_by_tags,
 )
@@ -130,6 +132,16 @@ urlpatterns = [
         "dashboard/",
         dashboard,
         name="dashboard"
+    ),
+    path(
+        "projects/<int:pk>/",
+        ProjectDetailView.as_view(),
+        name="project-detail"
+    ),
+    path(
+        "projects/<int:pk>/toggle-assign/",
+        toggle_assign_to_project,
+        name="toggle-project-assign",
     ),
 ]
 
