@@ -32,6 +32,9 @@ class Team(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def sum_of_budget(self) -> int:
+        return sum(project.budget for project in self.projects.all())
+
 
 class Worker(AbstractUser):
     position = models.ForeignKey(
@@ -77,6 +80,7 @@ class Project(models.Model):
         null=True,
         related_name="projects"
     )
+    budget = models.DecimalField(decimal_places=2, max_digits=8, default=0)
 
     def __str__(self) -> str:
         return self.name
