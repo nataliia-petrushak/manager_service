@@ -11,6 +11,9 @@ from .views import (
     PositionUpdate,
     PositionDelete,
     ProjectDetailView,
+    ProjectCreate,
+    ProjectUpdate,
+    ProjectDelete,
     TeamDetailView,
     WorkerDetailView,
     WorkerCreate,
@@ -143,6 +146,21 @@ urlpatterns = [
         toggle_assign_to_project,
         name="toggle-project-assign",
     ),
+    path(
+        "projects/create/",
+        ProjectCreate.as_view(),
+        name="project-create"
+        ),
+    path(
+        "projects/<int:pk>/update",
+        ProjectUpdate.as_view(),
+        name="project-update"
+        ),
+    path(
+        "projects/<int:pk>/delete",
+        ProjectDelete.as_view(),
+        name="project-delete"
+        ),
 ]
 
 app_name = "task_manager"

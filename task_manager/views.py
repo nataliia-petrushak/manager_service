@@ -14,7 +14,8 @@ from .forms import (
     TaskTypeSearchForm,
     PositionForm,
     PositionSearchForm,
-    WorkerCreateForm
+    WorkerCreateForm,
+    ProjectForm,
 )
 from .models import Task, TaskType, Position, Worker, Project, Team
 
@@ -130,8 +131,11 @@ class WorkerCreate(generic.CreateView):
 class WorkerUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Worker
     form_class = WorkerCreateForm
-    template_name = "task_manager/worker_update.html"
-    success_url = reverse_lazy("task_manager:index")
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:worker-detail", kwargs={
+            "pk": self.kwargs["pk"]
+        })
 
 
 class WorkerDelete(LoginRequiredMixin, generic.DeleteView):
@@ -195,8 +199,8 @@ class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
     form_class = TaskForm
 
     def get_success_url(self):
-        return reverse_lazy("task_manager:project-tasks", kwargs={
-            "pk": self.request.POST.get("project")
+        return reverse_lazy("task_manager:task-detail", kwargs={
+            "pk": self.kwargs["pk"]
         })
 
 
@@ -225,6 +229,27 @@ def dashboard(request):
 
 class ProjectDetailView(generic.DetailView):
     model = Project
+
+
+class ProjectCreate(LoginRequiredMixin, generic.CreateView):
+    model = Project
+    form_class = ProjectForm
+    success_url = reverse_lazy("task_manager:dashboard")
+
+
+class ProjectUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Project
+    form_class = ProjectForm
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:project-detail", kwargs={
+            "pk": self.kwargs["pk"]
+        })
+
+
+class ProjectDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Project
+    success_url = reverse_lazy("task_manager:dashboard")
 
 
 @login_required
