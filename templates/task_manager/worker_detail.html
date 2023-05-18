@@ -28,24 +28,66 @@
                   <div class="d-flex justify-content-between align-items-center mb-2">
                     <h3 class="mb-0">{{ worker.first_name }} {{ worker.last_name }}</h3>
                     {% if user.id == worker.id %}
-                      <div class="row mt-3">
-                        <a style="width: 40px; height: 40px; box-shadow: 0 0.3125rem 0.625rem 0 rgba(151, 153, 55, 0.32)" href="{% url 'task_manager:worker-update' pk=worker.id %}" class="btn btn-white mx-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen mx-n4" viewBox="0 0 16 16">
-                          <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                        </svg>
-                        </a>
-                        <a style="width: 40px; height: 40px; box-shadow: 0 0.3125rem 0.625rem 0 rgba(151, 153, 55, 0.32)" href="{% url 'task_manager:worker-delete' pk=worker.id %}" class="btn btn-white mx-3">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash mx-n4" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                          </svg>
-                        </a>
-                      </div>
+                      <ul class="list-unstyled">
+                        <li style="box-shadow: 0 0.3125rem 0.625rem 0 rgba(151, 153, 55, 0.32)" class="card dropdown dropdown-hover mx-2">
+                          <a class="my-2 mx-3 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg width="20" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                              <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
+                            </svg>
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive mt-0 mt-lg-3 p-3 border-radius-lg" aria-labelledby="dropdownMenuDocs">
+                            <div class="d-none d-lg-block">
+                              <ul class="list-group">
+                                <li class="nav-item list-group-item border-0 p-0">
+                                  <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:worker-update' pk=worker.id %}">
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Edit profile</h6>
+                                  </a>
+                                </li>
+                                <li class="nav-item list-group-item border-0 p-0">
+                                  <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:worker-delete' pk=worker.id %}">
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Delete profile</h6>
+                                  </a>
+                                </li>
+                                {% if user.team %}
+                                  <li class="nav-item list-group-item border-0 p-0">
+                                    <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:project-create'%}">
+                                      <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Edit team</h6>
+                                    </a>
+                                  </li>
+                                {% else %}
+                                  <li class="nav-item list-group-item border-0 p-0">
+                                    <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:project-create'%}">
+                                      <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Create team</h6>
+                                    </a>
+                                  </li>
+                                {% endif %}
+                                <li class="nav-item list-group-item border-0 p-0">
+                                  <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:project-create'%}">
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Create project</h6>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </ul>
+                        </li>
+                      </ul>
                     {% endif %}
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-auto">
+                      <a href="{% url 'task_manager:team-detail' pk=worker.team.id %}"
+                         class="avatar-xs"
+                         title="{{ worker.team.name }}">
+                        <img style="border-radius: 50% !important;"
+                             class="me-2 mb-2"
+                             src="{% static 'img/teams/'|add:worker.team.name|add:'.png' %}">
+                        <p style="display: inline">{{ worker.team.name }} team</p>
+                      </a>
+                    </div>
                   </div>
                   <div class="row mb-0">
                     <div class="col-auto">
-                      <span class="mb-0"><i>{{ worker.position.name }}</i></span>
+                      <span class="mb-0"><i>#{{ worker.position.name }}</i></span>
                     </div>
                   </div>
                   <div class="row mb-4">
