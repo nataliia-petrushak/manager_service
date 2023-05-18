@@ -178,3 +178,34 @@ class PositionSearchForm(forms.Form):
             "style": "padding: 10px; width: 300px;"
         })
     )
+
+
+class ProjectForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "placeholder": "Name*",
+        "style": "padding: 10px"
+    }),
+        label="",
+        required=True
+    )
+    description = forms.CharField(widget=forms.Textarea(attrs={
+        "placeholder": "Description",
+        "style": "padding: 10px; height: 100px"
+    }),
+        label=""
+    )
+    team = forms.ModelChoiceField(
+        widget=forms.Select(attrs={"style": "padding: 10px;"}),
+        queryset=Team.objects.all()
+    )
+    deadline = forms.DateField(widget=DateInput(attrs={
+        "style": "padding: 8px 0 0 55px; height: 43px; width: 200px"
+    }))
+    budget = forms.DecimalField(widget=forms.NumberInput(attrs={
+        "style": "padding: 10px;",
+        "placeholder": "Budget"
+    }), label="", decimal_places=2, max_digits=8)
+
+    class Meta:
+        model = Project
+        fields = "__all__"
