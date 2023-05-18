@@ -3,13 +3,13 @@
 
 {% block content %}
 
-{% include "includes/sidebar.html" %}
+  {% include "includes/sidebar.html" %}
   <div class="row mt-8">
-    <div class="row my-6 mx-4">
+    <div class="row my-6 mx-7">
       <h1 class="text-primary">Dashboard</h1>
       <h5 class="mb-6">Here you can see all the projects, teams activity and users rating</h5>
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-        <div style="background-color: rgba(255, 0, 127, .0); border: 1px solid #FF007F; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16);" class="card pb-4">
+        <div style="background-color: rgba(255, 0, 100, .04); border: 1px solid #FF007F; border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16);" class="card pb-4">
           <div style="background-color: transparent; border-radius: 20px;" class="card-header pb-0">
             <div class="row">
               <div class="col-lg-6 col-7">
@@ -28,6 +28,7 @@
                 <thead>
                   <tr>
                     <th class="text-center text-uppercase text-primary text-xxs font-weight-bolder opacity-7">Companies</th>
+                    <th class="text-center text-uppercase text-primary text-xxs font-weight-bolder opacity-7">Budget</th>
                     <th class="text-center text-uppercase text-primary text-xxs font-weight-bolder opacity-7">Team</th>
                     <th class="text-center text-uppercase text-primary text-xxs font-weight-bolder opacity-7">Deadline</th>
                     <th class="text-center text-uppercase text-primary text-xxs font-weight-bolder opacity-7">Completion</th>
@@ -43,13 +44,14 @@
                               <path d="M6.731 0 2 9.125h2.788L6.73 5.497l1.93 3.628h2.766L6.731 0zm4.694 9.125-1.372 2.756L8.66 9.125H6.547L10.053 16l3.484-6.875h-2.112z"/>
                             </svg>
                           </div>
-                          <div class="d-flex flex-column justify-content-center mx-3">
+                          <a href="{% url 'task_manager:project-detail' pk=project.id %}" class="d-flex flex-column justify-content-center mx-3">
                             <h6 class="mb-0 text-sm text-primary">{{ project.name }}</h6>
-                          </div>
+                          </a>
                         </div>
                       </td>
+                      <td style="font-size: 13px" class="font-weight-bolder text-primary">{{ project.budget }}$</td>
                       <td>
-                        <div class="avatar-group ms-2">
+                        <div class="avatar-group ms-3">
                           <a href="{% url 'task_manager:team-detail' pk=project.team.id %}" class="avatar avatar-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ project.team.name }}">
                             <img src="{% static 'img/teams/'|add:project.team.name|add:'.png' %}" alt="{{ project.team.name }}">
                           </a>
@@ -63,14 +65,14 @@
                         </svg>
                         <span class="text-xs font-weight-bold text-primary"> {{ project.deadline }} </span>
                       </td>
-                      <td class="col-lg-4">
-                        <div class="progress-wrapper ms-4">
+                      <td class="col-lg-3">
+                        <div class="progress-wrapper ms-2">
                           <div class="progress-info">
                             <div class="progress-percentage">
                               <span class="text-xs text-primary font-weight-bold">{{ project.progress }}%</span>
                             </div>
                           </div>
-                          <div style="width: 200px;" class="progress">
+                          <div style="width: 180px;" class="progress">
                             <div class="progress-bar bg-gradient-primary w-{{ project.progress }}" role="progressbar" aria-valuenow="{{ project.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
@@ -82,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div style="background-color: rgba(111, 0, 255, .0);border: 1px solid #6f00ff;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16); padding:0 0 20px 0" class="card my-5">
+        <div style="background-color: rgba(111, 0, 255, .04);border: 1px solid #6f00ff;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(255, 0, 127, 0.16); padding:0 0 20px 0" class="card my-5">
           <div style="background-color: transparent;border-radius: 20px;" class="card-header pb-0">
             <div class="row">
               <div class="col-lg-6 col-7">
@@ -102,70 +104,88 @@
                   <tr>
                     <th style="color:#6f00ff" class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Teams</th>
                     <th style="color:#6f00ff" class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Members</th>
-                    <th style="color:#6f00ff" class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Projects done</th>
+                    <th style="color:#6f00ff" class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Budget</th>
+                    <th style="color:#6f00ff" class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Projects</th>
                   </tr>
                 </thead>
                 <tbody>
-                {% for team in teams %}
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <a href="{% url 'task_manager:team-detail' pk=team.id %}">
-                          <div>
-                            <img src="{% static 'img/teams/'|add:team.name|add:'.png' %}" class="avatar avatar-sm me-3" alt="{{ team.name }}">
-                          </div>
-                        </a>
-                        <div class="d-flex flex-column justify-content-center">
+                  {% for team in teams %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <a href="{% url 'task_manager:team-detail' pk=team.id %}">
+                            <div>
+                              <img src="{% static 'img/teams/'|add:team.name|add:'.png' %}" class="avatar avatar-sm me-3" alt="{{ team.name }}">
+                            </div>
+                          </a>
+                          <div class="d-flex flex-column justify-content-center">
                             <h6 style="color:#6f00ff" class="mb-0 text-sm">{{ team.name }}</h6>
                           </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="avatar-group mt-2 ms-9">
-                        {% for worker in team.workers.all %}
-                          <a href="{% url 'task_manager:worker-detail' pk=worker.id %}"
-                             class="avatar avatar-sm rounded-circle"
-                             data-bs-toggle="tooltip"
-                             data-bs-placement="bottom"
-                             title="{{ worker.first_name }} {{ worker.last_name }}">
-                            <img src="{% static 'img/team/'|add:worker.username|add:'.jpeg' %}" alt="{{ team.name }}">
-                          </a>
-                        {% endfor %}
-                      </div>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span style="color:#6f00ff" class="text-xs font-weight-bold"> {{ team.projects_count }} </span>
-                    </td>
-                  </tr>
-                {% endfor %}
+                        </div>
+                      </td>
+                      <td>
+                        <div class="avatar-group mt-2 ms-9">
+                          {% for worker in team.workers.all %}
+                            <a href="{% url 'task_manager:worker-detail' pk=worker.id %}"
+                               class="avatar avatar-sm rounded-circle"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               title="{{ worker.first_name }} {{ worker.last_name }}">
+                              <img src="{% static 'img/team/'|add:worker.username|add:'.jpeg' %}" alt="{{ team.name }}">
+                            </a>
+                          {% endfor %}
+                        </div>
+                      </td>
+                      <td style="font-size: 13px; color: #6f00ff" class="font-weight-bolder text-center">{{ team.sum_of_budget }}$</td>
+                      <td class="align-middle text-center text-sm">
+                        <span style="color:#6f00ff" class="text-xs font-weight-bold"> {{ team.projects_count }} </span>
+                      </td>
+                    </tr>
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <div style="background-color: rgba(6, 146, 72, .0);border: 1px solid #069248;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(6, 146, 72, .16);" class="card me-5">
+      <div class="col-lg-3 col-md-6">
+        <div style="background-color: rgba(6, 146, 72, .04);border: 1px solid #069248;border-radius: 20px;box-shadow: 0 2px 12px 0 rgba(6, 146, 72, .16);" class="card me-5">
           <div style="background-color: transparent;border-radius: 20px;" class="card-header pb-0">
-            <h5 style="color: #069248;font-size: 25px; font-weight:bold; padding:0 10px;">USERS RATING</h5>
+            <h5 style="color: #069248;font-size: 25px; font-weight:bold; padding:0 10px;" class="mx-3">USERS RATING</h5>
           </div>
           <div class="card-body p-3">
-           <ol>
-             {% for user, tasks in users %}
-               <li style="color: #069248" class="mt-3">
-                <a href="{% url 'task_manager:worker-detail' pk=user.id %}"
-                   class="text-muted avatar-sm"
-                   title="{{ user.first_name }} {{ user.last_name }}">
-                  <img style="border-radius: 50% !important;" src="{% static 'img/team/'|add:user.username|add:'.jpeg' %}">
-                  <p style="margin: 3px; display: inline">{{ user.first_name }} {{ user.last_name }}</p>
+            <ol>
+              {% for user, tasks in users %}
+                <li style="color: #069248;" class="mt-3 ms-1 {% if user in users.0 or user in users.1 or user in users.2 %}list-unstyled ms-n4{% endif %}">
+                  <a href="{% url 'task_manager:worker-detail' pk=user.id %}"
+                     class="text-muted avatar-sm"
+                     title="{{ user.first_name }} {{ user.last_name }}">
+                    {% if user in users.0 %}
+                      <span style="font-size: 20px">🏆</span>
+                      <img class="mt-n2 ms-1" style="border-radius: 50% !important;" src="{% static 'img/team/'|add:user.username|add:'.jpeg' %}">
+                      <p style="margin: 3px; display: inline">{{ user.first_name }} {{ user.last_name }}</p>
+                    {% elif user in users.1 %}
+                      <span style="font-size: 20px">🥈</span>
+                      <img class="mt-n2 ms-1" style="border-radius: 50% !important;" src="{% static 'img/team/'|add:user.username|add:'.jpeg' %}">
+                      <p style="margin: 3px; display: inline">{{ user.first_name }} {{ user.last_name }}</p>
+                    {% elif user in users.2 %}
+                      <span style="font-size: 20px">🥉</span>
+                      <img class="mt-n2 ms-1" style="border-radius: 50% !important;" src="{% static 'img/team/'|add:user.username|add:'.jpeg' %}">
+                      <p style="margin: 3px; display: inline">{{ user.first_name }} {{ user.last_name }}</p>
+                    {% else %}
+                      <img style="border-radius: 50% !important;" class="ms-1" src="{% static 'img/team/'|add:user.username|add:'.jpeg' %}">
+                      <p style="margin: 3px; display: inline">{{ user.first_name }} {{ user.last_name }}</p>
+                    {% endif %}
                 </a>
-              </li>
-             {% endfor %}
+                  <hr class="bg-success">
+                </li>
+
+              {% endfor %}
            </ol>
           </div>
         </div>
       </div>
-   </div>
+    </div>
   </div>
 
 {% endblock %}
