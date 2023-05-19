@@ -78,9 +78,9 @@
                       </ul>
                     {% else %}
                       {% if user.team == worker.team %}
-                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn btn-white">Remove from team</a>
+                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn shadow-warning btn-white">Remove from team</a>
                       {% else %}
-                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn btn-white">Add to team</a>
+                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn shadow-success btn-white">Add to team</a>
                       {% endif %}
                     {% endif %}
                   </div>
