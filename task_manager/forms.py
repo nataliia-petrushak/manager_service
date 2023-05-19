@@ -214,3 +214,17 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = "__all__"
+
+
+class TeamForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        "placeholder": "Name*",
+        "style": "padding: 10px"
+    }),
+        label="",
+        required=True
+    )
+
+    class Meta:
+        model = Team
+        fields = "__all__"
