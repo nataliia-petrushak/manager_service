@@ -76,18 +76,26 @@
                           </ul>
                         </li>
                       </ul>
+                    {% else %}
+                      {% if user.team == worker.team %}
+                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn btn-white">Remove from team</a>
+                      {% else %}
+                        <a href="{% url 'task_manager:toggle-team-add' pk=worker.id %}" class="btn btn-white">Add to team</a>
+                      {% endif %}
                     {% endif %}
                   </div>
                   <div class="row mb-3">
                     <div class="col-auto">
-                      <a href="{% url 'task_manager:team-detail' pk=worker.team.id %}"
-                         class="avatar-xs"
-                         title="{{ worker.team.name }}">
-                        <img style="border-radius: 50% !important;"
-                             class="me-2 mb-2"
-                             src="{% static 'img/teams/'|add:worker.team.name|add:'.png' %}">
-                        <p style="display: inline">{{ worker.team.name }} team</p>
-                      </a>
+                      {% if worker.team %}
+                        <a href="{% url 'task_manager:team-detail' pk=worker.team.id %}"
+                           class="avatar-xs"
+                           title="{{ worker.team.name }}">
+                          <img style="border-radius: 50% !important;"
+                               class="me-2 mb-2"
+                               src="{% static 'img/teams/'|add:worker.team.name|add:'.png' %}">
+                          <p style="display: inline">{{ worker.team.name }} team</p>
+                        </a>
+                      {% endif %}
                     </div>
                   </div>
                   <div class="row mb-0">
