@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 from taggit.forms import TagField
 
 from .models import Task, Project, TaskType, Position, Worker, Team
@@ -75,7 +74,9 @@ class WorkerCreateForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = Worker
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "position", "team")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "position", "team"
+        )
 
 
 class TaskForm(forms.ModelForm):

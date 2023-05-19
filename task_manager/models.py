@@ -128,7 +128,7 @@ class Task(models.Model):
     tags = TaggableManager(blank=True)
 
     def __str__(self) -> str:
-        return f"{self.name} (priority: {self.priority}, deadline: {self.deadline})"
+        return f"{self.name} (priority: {self.priority})"
 
     def tags_left(self) -> int:
         count = self.tags.count() - 1

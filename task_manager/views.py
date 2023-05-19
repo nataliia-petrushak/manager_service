@@ -92,7 +92,9 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
         form = PositionSearchForm(self.request.GET)
 
         if form.is_valid():
-            queryset = Position.objects.filter(name__icontains=form.cleaned_data["name"])
+            queryset = Position.objects.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
         return queryset
 
 
@@ -153,7 +155,9 @@ def toggle_assign_to_task(request, pk):
         assignee.tasks.remove(pk)
     else:
         assignee.tasks.add(pk)
-    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
+    return HttpResponseRedirect(reverse_lazy(
+        "task_manager:task-detail", args=[pk]
+    ))
 
 
 @login_required
@@ -274,7 +278,9 @@ def toggle_assign_to_project(request, pk):
         team.projects.remove(project)
     else:
         team.projects.add(project)
-    return HttpResponseRedirect(reverse_lazy("task_manager:project-detail", args=[pk]))
+    return HttpResponseRedirect(reverse_lazy(
+        "task_manager:project-detail", args=[pk]
+    ))
 
 
 class TeamCreate(LoginRequiredMixin, generic.CreateView):
@@ -304,5 +310,6 @@ def toggle_add_to_team(request, pk):
         team.workers.remove(user)
     else:
         team.workers.add(user)
-    return HttpResponseRedirect(reverse_lazy("task_manager:worker-detail", args=[pk]))
-
+    return HttpResponseRedirect(reverse_lazy(
+        "task_manager:worker-detail", args=[pk]
+    ))
