@@ -4,26 +4,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="static/img/apple-icon.png">
-  <link rel="icon" type="image/png" href=static/img/favicon.png">
   <link rel="canonical" href="https://appseed.us/ui-kit/soft-ui-design-system"/>
-  <link rel="canonical" href="https://appseed.us/django/django-pixel-bootstrap-uikit">
 
   <title>
-    Django Soft UI Design System - {% block title %}{% endblock %} | AppSeed
+    Task Manager - {% block title %}{% endblock %}
   </title>
   {% load static %}
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="static/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="static/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="static/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/soft-design-system.css' %}" rel="stylesheet" />
-  <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet" />
   <link id="pagestyle" href="{% static 'css/material-kit.css' %}" rel="stylesheet" />
   <link id="pagestyle" href="{% static 'css/task-list.css' %}" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'css/tagsinput.css' %}">
@@ -33,7 +25,10 @@
     {% block sidebar %}{% endblock sidebar %}
 
     {% block content %}{% endblock content %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous">
+    </script>
     <script src="{% static 'js/tagsinput.js' %}"></script>
     <script>
       $("#post-form").submit(function(e){
@@ -42,8 +37,5 @@
     </script>
 
     {% include "includes/footer.html" %}
-
-    {% include "includes/scripts.html" %}
-
 </body>
 </html>
