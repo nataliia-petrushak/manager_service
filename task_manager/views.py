@@ -172,7 +172,8 @@ def tasks_of_project_by_tags(request, pk: int, slug: str = None):
             Q(is_completed=False) & Q(assignees_count__gt=0)
         ),
         "completed": task_list.filter(is_completed=True),
-        "id": pk
+        "id": pk,
+        "slug": slug,
     }
 
     return render(request, "task_manager/task_list.html", context)
