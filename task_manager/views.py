@@ -275,3 +275,20 @@ def toggle_assign_to_project(request, pk):
         team.projects.add(project)
     return HttpResponseRedirect(reverse_lazy("task_manager:project-detail", args=[pk]))
 
+
+class TeamCreate(LoginRequiredMixin, generic.CreateView):
+    model = Team
+    form_class = TeamForm
+    success_url = reverse_lazy("task_manager:dashboard")
+
+
+class TeamUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Team
+    form_class = TeamForm
+    success_url = reverse_lazy("task_manager:dashboard")
+
+
+class TeamDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Team
+    success_url = reverse_lazy("task_manager:dashboard")
+
