@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelMultipleChoiceField, CheckboxSelectMultiple
 from taggit.forms import TagField
 
 from .models import Task, Project, TaskType, Position, Worker, Team
@@ -106,16 +107,20 @@ class TaskForm(forms.ModelForm):
         queryset=TaskType.objects.all(),
         widget=forms.Select(attrs={"style": "padding: 10px;"}),
     )
-    assignees = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
     tags = TagField(required=False)
 
     class Meta:
         model = Task
         fields = "__all__"
+
+    def __init__(self, user, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        team = user.team
+        self.fields["assignees"] = forms.ModelMultipleChoiceField(
+            queryset=get_user_model().objects.filter(team=team),
+            widget=forms.CheckboxSelectMultiple,
+            required=False,
+        )
 
 
 class TaskTypeForm(forms.ModelForm):
