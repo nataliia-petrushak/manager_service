@@ -292,3 +292,16 @@ class TeamDelete(LoginRequiredMixin, generic.DeleteView):
     model = Team
     success_url = reverse_lazy("task_manager:dashboard")
 
+
+@login_required
+def toggle_add_to_team(request, pk):
+    user = get_user_model().objects.get(id=pk)
+    team = Team.objects.get(id=request.user.team.id)
+    if (
+        user in team.workers.all()
+    ):  # probably could check if user exists
+        team.workers.remove(user)
+    else:
+        team.workers.add(user)
+    return HttpResponseRedirect(reverse_lazy("task_manager:worker-detail", args=[pk]))
+
