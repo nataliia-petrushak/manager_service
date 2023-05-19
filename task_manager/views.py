@@ -16,6 +16,7 @@ from .forms import (
     PositionSearchForm,
     WorkerCreateForm,
     ProjectForm,
+    TeamForm,
 )
 from .models import Task, TaskType, Position, Worker, Project, Team
 
@@ -148,7 +149,7 @@ def toggle_assign_to_task(request, pk):
     assignee = get_user_model().objects.get(id=request.user.id)
     if (
         Task.objects.get(id=pk) in assignee.tasks.all()
-    ):  # probably could check if assignee exists
+    ):  # probably could check if task exists
         assignee.tasks.remove(pk)
     else:
         assignee.tasks.add(pk)
@@ -193,6 +194,11 @@ class TaskCreate(LoginRequiredMixin, generic.CreateView):
             "pk": self.request.POST.get("project")
         })
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
 
 class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Task
@@ -202,6 +208,11 @@ class TaskUpdate(LoginRequiredMixin, generic.UpdateView):
         return reverse_lazy("task_manager:task-detail", kwargs={
             "pk": self.kwargs["pk"]
         })
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
 
 class TaskDelete(LoginRequiredMixin, generic.DeleteView):
@@ -258,7 +269,7 @@ def toggle_assign_to_project(request, pk):
     project = Project.objects.get(id=pk)
     if (
         project in team.projects.all()
-    ):  # probably could check if car exists
+    ):  # probably could check if project exists
         team.projects.remove(project)
     else:
         team.projects.add(project)
