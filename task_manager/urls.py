@@ -23,6 +23,9 @@ from .views import (
     TaskCreate,
     TaskUpdate,
     TaskDelete,
+    TeamCreate,
+    TeamUpdate,
+    TeamDelete,
     toggle_assign_to_task,
     toggle_assign_to_project,
     dashboard,
@@ -161,6 +164,19 @@ urlpatterns = [
         ProjectDelete.as_view(),
         name="project-delete"
         ),
+    path(
+        "teams/create/",
+        TeamCreate.as_view(),
+        name="team-create"
+    ),
+    path(
+        "teams/<int:pk>/update/",
+        TeamUpdate.as_view(),
+        name="team-update"
+    ),
+    path("teams/<int:pk>/delete",
+         TeamDelete.as_view(),
+         name="team-delete")
 ]
 
 app_name = "task_manager"
