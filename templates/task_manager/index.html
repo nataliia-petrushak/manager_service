@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+  {% include 'includes/sidebar.html' %}
+
+  <header class="bg-gradient-dark">
+    <div class="page-header section-height-75" style="background-image: url('static/img/backgrounds/index.webp');">
+      <span class="mask bg-dark opacity-6"></span>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center mx-auto my-auto">
+            <h1 class="text-white">Make your work easier</h1>
+            <p class="lead mb-4 text-white opacity-8">Create tasks for you and your team. Organize your work and be productive</p>
+            {% if user.is_authenticated %}
+              <a href="{% url 'task_manager:project-tasks' pk=user.team.projects.first.id %}" class="btn bg-white text-dark">Get started</a>
+            {% else %}
+              <a href="{% url 'login'%}?next={{request.path}}" class="btn bg-white text-dark">Get started</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="position-absolute w-100 z-index-1 bottom-0">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 40" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="moving-waves">
+            <use xlink:href="#gentle-wave" x="48" y="-1" fill="rgba(255,255,255,0.40" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.35)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.25)" />
+            <use xlink:href="#gentle-wave" x="48" y="8" fill="rgba(255,255,255,0.20)" />
+            <use xlink:href="#gentle-wave" x="48" y="13" fill="rgba(255,255,255,0.15)" />
+            <use xlink:href="#gentle-wave" x="48" y="16" fill="rgba(255,255,255,1" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+  <body>
+    <section class="section section-lg pt-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-lg-3 text-left mx-auto mt-5">
+            <div class="icon-box mb-2">
+              <div style="color:black" class="icon icon-primary mb-4 ms-1 fa-2x">
+                <span class="fas fa-user"></span>
+              </div>
+              <p>
+                There are already <strong>{{ num_workers }} users</strong>,
+                who already tried our platform and keep working with us for a long time
+              </p>
+              <a href="{% url 'task_manager:dashboard' %}">Read More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-3 text-left mx-auto mt-5">
+            <div class="icon-box mb-2">
+              <div style="color:black" class="icon icon-primary mb-4 fa-2x">
+                <span class="fas fa-money-check"></span>
+              </div>
+              <p>
+                Here you can find your opportunity to be successful!
+                For the last year there were finished <strong>{{ num_projects }} projects</strong>.
+              </p>
+              <a href="{% url 'task_manager:dashboard' %}">Read More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                   <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                 </svg>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-3 text-left mx-auto mt-5">
+            <div class="icon-box mb-2">
+              <div class="icon icon-primary mb-4 fa-2x text-dark">
+                <svg height=35 xmlns="http://www.w3.org/2000/svg" class="text-muted" viewBox="0 0 640 512">
+                  <path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
+                </svg>
+              </div>
+              <p>
+                At our platform work <strong>{{ num_teams }} teams </strong>.
+                You can find here or create your own team and work together!
+              </p>
+              <a href="{% url 'task_manager:dashboard' %}">Read More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+
+{% endblock content %}

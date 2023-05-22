@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ object|yesno:"Edit,Create" }} Task {% endblock %}
+
+{% block content %}
+{% include "includes/sidebar.html" %}
+
+  <div class="row">
+    <header>
+      <div class="page-header min-height-300">
+        <span class="mask bg-gradient-success opacity-4"></span>
+      </div>
+    </header>
+
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+      <section class="py-sm-7 py-5 position-relative">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 mx-auto">
+              <div class="col-lg-9 col-md-9 z-index-2 position-relative px-md-1 px-sm-5 mx-auto mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h3 class="mb-2 mx-auto">{{ object|yesno:"Edit,Create" }} Task </h3>
+                </div>
+                <br><br>
+                <form role="form" method="post" action="">
+                {% csrf_token %}
+                  <div class="form-group row">
+                    <div class="col">
+                      {{ form.name|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                      {{ form.is_completed|as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col">
+                      {{ form.deadline|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                      <label>Tags</label>
+                      <input type="text" data-role="tagsinput" class="form-control" name="tags">
+                    </div>
+                  </div>
+                  {{ form.description|as_crispy_field }}
+                  <div class="form-group row">
+                    <div class="col">
+                      {{ form.project|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                      {{ form.task_type|as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col">
+                      {{ form.assignees|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                       {{ form.priority|as_crispy_field }}
+                    </div>
+                  </div>
+                  <div class="text-center">
+                  <input type="submit" class="btn btn-lg bg-gradient-dark mt-4 mb-0" value="Submit">
+                  <a href="{% url 'task_manager:project-tasks' pk=user.team.projects.first.id %}" class="btn bg-gradient-secondary btn-lg mt-4 mb-0 mx-3">Cancel</a>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Task Manager - {% block title %}{% endblock %}
+  </title>
+  {% load static %}
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'css/soft-design-system.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static 'css/material-kit.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static 'css/task-list.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/tagsinput.css' %}">
+
+</head>
+<body>
+    {% block sidebar %}{% endblock sidebar %}
+
+    {% block content %}{% endblock content %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous">
+    </script>
+    <script src="{% static 'js/tagsinput.js' %}"></script>
+    <script>
+      $("#post-form").submit(function(e){
+          e.preventDefault();
+          });
+    </script>
+
+    {% include "includes/footer.html" %}
+</body>
+</html>

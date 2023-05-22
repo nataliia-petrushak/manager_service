@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} {{ task.name }} {% endblock %}
+
+{% block content %}
+
+{% include "includes/sidebar.html" %}
+
+  <div class="row">
+    <header>
+      <div class="page-header min-height-300" style="background-image: url({% static 'img/backgrounds/task-detail.webp' %});">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+      </div>
+    </header>
+
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+      <section class="py-sm-7 py-5 position-relative">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 mx-auto">
+              <div class="col-lg-9 col-md-9 z-index-2 position-relative px-md-1 px-sm-5 mx-auto mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h3 class="mb-2">{{ task.name }}</h3>
+                  <li style="box-shadow: 0 0.3125rem 0.625rem 0 rgba(51, 153, 255, 0.32)" class="card dropdown dropdown-hover mx-2">
+                    <a class="my-2 mx-3 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+                      <svg width="20" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive mt-0 mt-lg-3 p-3 border-radius-lg" aria-labelledby="dropdownMenuDocs">
+                      <div class="d-none d-lg-block">
+                        <ul class="list-group">
+                          <li class="nav-item list-group-item border-0 p-0">
+                            <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:task-update' pk=task.id %}">
+                              <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Edit task</h6>
+                            </a>
+                          </li>
+                          <li class="nav-item list-group-item border-0 p-0">
+                            <a class="dropdown-item py-2 ps-3 border-radius-md" target="_blank" href="{% url 'task_manager:task-delete' pk=task.id %}">
+                              <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Delete task</h6>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </ul>
+                  </li>
+                </div>
+                <table class="mx-n2 table table-borderless">
+                  <thead>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-muted"><i>Priority</i></td>
+                      <td>
+                        {% if task.priority in "H" %}
+                          <span class="badge bg-primary">{{ task.get_priority_display }}</span>
+                        {% elif task.priority in "M" %}
+                          <span class="badge bg-warning">{{ task.get_priority_display }}</span>
+                        {% else %}
+                          <span class="badge bg-success">{{ task.get_priority_display }}</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted"><i>Status</i></td>
+                      <td>{% if not task.is_completed and task.assignees.count > 0 %}In Progress{% elif task.is_completed %}Completed{% else %}To Do{% endif %}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted"><i>Assignees</i></td>
+                      <td>
+                        <ul class="list-unstyled">
+                          {% for assignee in task.assignees.all %}
+                            <li class="list-item mb-2">
+                              <a href="{% url 'task_manager:worker-detail' pk=assignee.id %}"
+                               class="text-muted avatar-sm"
+                               title="{{ assignee.first_name }} {{ assignee.last_name }}">
+                                <img style="border-radius: 50% !important;"
+                                     src="{% static 'img/team/'|add:assignee.username|add:'.jpeg' %}">
+                                <p style="margin: 5px; display: inline">{{ assignee.first_name }} {{assignee.last_name }}</p>
+                              </a>
+                            </li>
+                          {% endfor %}
+                          <li class="list-item mb-2">
+                            {% if task in user.tasks.all %}
+                              <a href="{% url 'task_manager:toggle-task-assign' pk=task.id %}" class="text-muted">
+                                <svg style="margin: 0 3px 4px 7px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person-slash" viewBox="0 0 16 16">
+                                  <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465l3.465-3.465Zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465Zm-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                                </svg>
+                                <i class="text-sm">Delete me</i>
+                              </a>
+                            {% else %}
+                              <a href="{% url 'task_manager:toggle-task-assign' pk=task.id %}" class="text-muted">
+                                <svg style="margin: 0 3px 4px 7px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                </svg>
+                                <i class="text-sm">Add me</i>
+                              </a>
+                            {% endif %}
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted"><i>Due date</i></td>
+                      <td>
+                        <svg style="margin: 0 3px 4px 0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                          <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
+                          <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
+                        </svg>
+                        {{ task.deadline }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted"><i>Task type</i></td>
+                      <td>
+                        <i>#{{ task.task_type }}</i>
+                      </td>
+                    </tr>
+                    <tr>
+                      {% if task.tags.all %}
+                        <td class="text-muted"><i>Tags</i></td>
+                        <td>
+                          {% for tag in task.tags.all %}
+                            <a
+                            style="color: white; background-color: rgba(58, 198, 255, .6); border: 1px solid rgba(60, 199, 255, .2); font-size:10px; height:22px; padding:3px 3px; margin: 0"
+                            class="btn button-sm"
+                            href="{% url 'task_manager:tagged' pk=task.project.id slug=tag.slug %}">
+                            {{ tag.name }}
+                            </a>
+                          {% endfor %}
+                        </td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+                <hr class="hr mb-4" style="border-bottom: 1px solid rgba(0, 0, 0, .5)">
+                <div class="row mb-4">
+                  <h5 class="h5">To do</h5>
+                  <p>{{ task.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+{% endblock content %}
