@@ -6,6 +6,12 @@ I tried to make it simple and in the same time comfortable for use. You can crea
 ### Check it out!
 [Task Manager project deployed to Render](https://task-manager-rpg4.onrender.com/)
 
+### You can use
+```shell
+login: dagny_t
+password: user12345
+```
+
 ### Installation
 Python3 must be already installed
 
@@ -24,4 +30,3 @@ python manage.py runserver
 * Filtering by tags and projects
 
 ### Demo
-![TaskBoard Interface](TaskBoard.png)
