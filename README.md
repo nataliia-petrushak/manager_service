@@ -30,3 +30,10 @@ python manage.py runserver
 * Filtering by tags and projects
 
 ### Demo
+<img width="1439" alt="Screenshot 2023-11-27 at 13 41 54" src="https://github.com/nataliia-petrushak/manager_service/assets/87134904/6735a8dc-8c8e-4b2c-b1a8-78749f47cd97">
+
+<img width="1440" alt="Screenshot 2023-11-27 at 13 42 53" src="https://github.com/nataliia-petrushak/manager_service/assets/87134904/44605c5b-ac88-441d-bac3-8c6af723e7b7">
+
+<img width="1440" alt="Screenshot 2023-11-27 at 13 41 19" src="https://github.com/nataliia-petrushak/manager_service/assets/87134904/e0313e09-5a48-43de-a757-c8b9f96edb6f">
+
+<img width="1440" alt="Screenshot 2023-11-27 at 13 43 39" src="https://github.com/nataliia-petrushak/manager_service/assets/87134904/8dc07688-efb0-4d4e-bb88-be11a9316d1f">
