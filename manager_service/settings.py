@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 
 import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+# DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "task-manager-rpg4.onrender.com"]
 
@@ -91,7 +95,7 @@ WSGI_APPLICATION = "manager_service.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://xyruniit:wvlwq3-Ems75wgdS6K7DoS_qhm28gVUQ@mouse.db.elephantsql.com/xyruniit",
+        default=os.getenv("DATABASE_URL"),
         conn_max_age=500
     )
 }
