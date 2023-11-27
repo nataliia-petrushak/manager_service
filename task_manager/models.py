@@ -86,10 +86,15 @@ class Project(models.Model):
         return self.name
 
     def progress(self) -> int:
-        tasks = self.tasks.count()
-        progress = round(self.tasks.filter(
+        all_tasks = self.tasks.count()
+        completed_tasks = self.tasks.filter(
             is_completed=True
-        ).count() / tasks * 10) * 10
+        ).count()
+        progress = 0
+        if completed_tasks:
+            progress = round(self.tasks.filter(
+                is_completed=True
+            ).count() / all_tasks * 10) * 10
         return progress
 
 

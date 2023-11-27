@@ -8,7 +8,7 @@ I tried to make it simple and in the same time comfortable for use. You can crea
 
 ### Try
 ```shell
-login: user
+login: dagny_t
 password: user12345
 ```
 
@@ -30,4 +30,3 @@ python manage.py runserver
 * Filtering by tags and projects
 
 ### Demo
-![TaskBoard Interface](TaskBoard.png)
